@@ -42,7 +42,7 @@ SEXP initEventListWrapper()
 //   If R is calling it, then we don't manage the memory!
 SEXP getEventListWithName(SEXP name, SEXP mangeItsMemory)
 {
-	std::string daName = CHAR(STRING_ELT(name, 0));
+  std::string daName = CHAR(STRING_ELT(name, 0));
   bool doManage = LOGICAL(mangeItsMemory)[0] == 1;
   
   return getEventListWithNameC(daName, doManage);
@@ -82,8 +82,8 @@ SEXP wrapTEventListPointer(TEventList* ptr, bool manageItsMemory)
 // Make a new event list given a name, title, and a set of events to put in it
 SEXP newEventList(SEXP name, SEXP title, SEXP entryNums)
 {
-	std::string daName = CHAR( STRING_ELT(name, 0) );
-	std::string daTitle = CHAR( STRING_ELT(title, 0) );
+  std::string daName = CHAR( STRING_ELT(name, 0) );
+  std::string daTitle = CHAR( STRING_ELT(title, 0) );
   
   int n = GET_LENGTH(entryNums);
   
@@ -119,22 +119,22 @@ SEXP deleteEventList(SEXP eventList)
 SEXP getName(SEXP eventList)
 {
   TEventList* el = checkForEventListWrapper(eventList);
-	
+  
   SEXP name = NEW_CHARACTER(1);
   SET_STRING_ELT( name, 0, mkChar(el->GetName()) );
-	
+  
   return name;
 }
-	
+
 ///////////////////////
 // Get the title of the event list
 SEXP getTitle(SEXP eventList)
 {
   TEventList* el = checkForEventListWrapper(eventList);
-	
+  
   SEXP name = NEW_CHARACTER(1);
   SET_STRING_ELT( name, 0, mkChar(el->GetTitle()) );
-	
+  
   return name;
 }
 
@@ -143,10 +143,10 @@ SEXP getTitle(SEXP eventList)
 SEXP nEntriesEventList(SEXP eventList)
 {
   TEventList* el = checkForEventListWrapper(eventList);
-	
+  
   SEXP n = NEW_INTEGER(1);
   INTEGER(n)[0] = el->GetN();
-	
+  
   return n;
 }
 
@@ -155,18 +155,18 @@ SEXP nEntriesEventList(SEXP eventList)
 SEXP getEntries(SEXP eventList)
 {
   TEventList* el = checkForEventListWrapper(eventList);
-
+  
   unsigned int l = el->GetN();
-	
+  
   SEXP e;
   PROTECT( e = NEW_INTEGER(l) );
-	
+  
   for ( unsigned int i = 0; i < l; ++i) {
     INTEGER(e)[i] = el->GetEntry(i);
   }
-	
+  
   UNPROTECT(1);
-	
+  
   return e;
 }
 
@@ -175,9 +175,9 @@ SEXP getEntries(SEXP eventList)
 SEXP clear(SEXP eventList)
 {
   TEventList* el = checkForEventListWrapper(eventList);
-	
+  
   el->Clear();
-	
+  
   return R_NilValue;
 }
 
@@ -185,18 +185,18 @@ SEXP clear(SEXP eventList)
 // Return a logical vector if entries are in the event list
 SEXP isInEventList(SEXP eventList, SEXP entryNums)
 {
-
+  
   TEventList* el = checkForEventListWrapper(eventList);
-
+  
   SEXP l;
   PROTECT(l = NEW_LOGICAL( GET_LENGTH(entryNums) ) );
-	
+  
   for ( unsigned int i = 0; i < GET_LENGTH(entryNums); ++i ) {
     LOGICAL(l)[i] = el->Contains( INTEGER(entryNums)[i] ) == 1;
   }
-	
+  
   UNPROTECT(1);
-	
+  
   return l;
 }
 
@@ -204,9 +204,9 @@ SEXP isInEventList(SEXP eventList, SEXP entryNums)
 // Put entries into the event list
 SEXP putIntoEventList(SEXP eventList, SEXP entryNums)
 {
-	
+  
   TEventList* el = checkForEventListWrapper(eventList);
-	
+  
   for ( unsigned int i = 0; i < GET_LENGTH(entryNums); ++i ) {
     el->Enter( INTEGER(entryNums)[i] );
   }

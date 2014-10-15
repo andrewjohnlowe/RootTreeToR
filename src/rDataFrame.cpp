@@ -315,10 +315,10 @@ SEXP RDataFrame::dataFrameInAnsForm()
 	
   // Fill these lists
   for ( unsigned int i=0; i < m_nCols; ++i )
-  {
-    SET_ELEMENT( data, i, m_columns[i]->column() );
-    SET_STRING_ELT( data_names, i, mkChar( m_columns[i]->name().c_str() ) );
-  }
+    {
+      SET_ELEMENT( data, i, m_columns[i]->column() );
+      SET_STRING_ELT( data_names, i, mkChar( m_columns[i]->name().c_str() ) );
+    }
   
   SET_NAMES(data, data_names);
 	
@@ -326,9 +326,9 @@ SEXP RDataFrame::dataFrameInAnsForm()
   INTEGER( VECTOR_ELT(ans, 2) )[0] = m_currentSize;
 	
   if ( beVerbose() )
-  { 
-    REprintf("RDataFrame - Saved %d rows\n", m_currentSize);
-  }
+    { 
+      REprintf("RDataFrame - Saved %d rows\n", m_currentSize);
+    }
   
   // No longer need protection from the garbage collector
   UNPROTECT(1);

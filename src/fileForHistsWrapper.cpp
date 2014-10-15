@@ -77,7 +77,7 @@ SEXP deleteFileForHists(SEXP fileForHists)
 SEXP openFileForHists(SEXP rootFileNameR)
 {
   // Get the file name
-	std::string fileName = CHAR(STRING_ELT(rootFileNameR, 0));
+  std::string fileName = CHAR(STRING_ELT(rootFileNameR, 0));
   
   TFile* f = new TFile(fileName.c_str());
 
@@ -102,7 +102,7 @@ const char* setFileDirectory(TFile* f, SEXP directoryR)
   // Change to a sub directory directory if necessary
   if ( ! isNull(directoryR) ) {
     
-		std::string dir = CHAR( STRING_ELT(directoryR, 0 ) );
+    std::string dir = CHAR( STRING_ELT(directoryR, 0 ) );
     if ( ! f->cd(dir.c_str()) ) {
       error("namesMatchingClass: cd failed");
     }
@@ -121,7 +121,7 @@ SEXP namesMatchingClass(SEXP fileForHists, SEXP directoryR, SEXP classTypeR)
   const char* oldDirectory = setFileDirectory(f, directoryR);
 
   // Get the class type
-	std::string classType = CHAR( STRING_ELT(classTypeR, 0) );
+  std::string classType = CHAR( STRING_ELT(classTypeR, 0) );
   
   // Keep track of the ones we want
   std::vector<const char*> names;
@@ -178,7 +178,7 @@ SEXP getHistsR(SEXP fileForHists, SEXP histNames, SEXP directoryR)
   for ( unsigned int i = 0; i < GET_LENGTH(histNames); ++i ) {
 
     // Get the name of the object
-		std::string name = CHAR( STRING_ELT(histNames, i) );
+    std::string name = CHAR( STRING_ELT(histNames, i) );
     
     // Set the list name
     SET_STRING_ELT( ansNames, i, mkChar(name.c_str()) );
@@ -270,7 +270,7 @@ SEXP addNumericVector(SEXP data, SEXP dataNames,
 //////////////////////////////////////////
 // addCharVector
 SEXP addCharVector(SEXP data, SEXP dataNames, 
-		      unsigned int j, int n, const char* name)
+		   unsigned int j, int n, const char* name)
 {
   SET_ELEMENT(data, j, NEW_STRING(n));
   SET_STRING_ELT(dataNames, j, mkChar(name));

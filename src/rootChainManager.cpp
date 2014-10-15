@@ -33,7 +33,7 @@ RootChainManager::RootChainManager(SEXP treeName, SEXP fileList, bool verbose, b
   if ( ! IS_CHARACTER(fileList) ) error("fileList must be a list of strings");
 	 
   // Get the tree name
-	std::string treeNameC = CHAR(STRING_ELT(treeName, 0));
+  std::string treeNameC = CHAR(STRING_ELT(treeName, 0));
 	 
   if (m_verbose) REprintf("Will read tree %s\n", treeNameC.c_str());
 	 
@@ -46,7 +46,7 @@ RootChainManager::RootChainManager(SEXP treeName, SEXP fileList, bool verbose, b
 	 
   // Add files
   for ( unsigned int i = 0; i < GET_LENGTH(fileList); ++i ) {    
-		std::string fileNameC = CHAR(STRING_ELT(fileList, i) );
+    std::string fileNameC = CHAR(STRING_ELT(fileList, i) );
     if (m_verbose) REprintf("Adding file %s to chain\n", fileNameC.c_str());
     m_chain->Add( fileNameC.c_str(), 0 );
   }
@@ -73,7 +73,7 @@ SEXP RootChainManager::names() const {
   // Advance to the first entry
   //m_chain->GetEntry(0);
   // Above commented out 20090616 - for TMBTrees this crashed root 
-	// on an unresolved symbol for allocator<char>. 
+  // on an unresolved symbol for allocator<char>. 
 	
   // Get the branches
   TObjArray* branches = m_chain->GetListOfBranches();

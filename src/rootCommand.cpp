@@ -1,39 +1,46 @@
 // Code to process a Root command
-#include <TROOT.h>
-#include <TRint.h>
+#include "TROOT.h"
+#include "TSystem.h"
 
+extern "C" {
 #include <R.h>
 #include <Rdefines.h>
+}
 
 #include <string>
 
-static TRint* rootApp;
-static int argc;
-char **argv;
 
 extern "C" {
   SEXP initRoot();
+  SEXP loadRootLibrary(SEXP libName);
   SEXP rootCommand(SEXP comm);
 }
 
 SEXP initRoot()
 {
-  // Initialize Root
-  argc = 0;
-  rootApp = new TRint("RootTreeToR", &argc, argv, 0, 0, 0);
-	
+  // Initialize root
+  // Don't actually do anything
   return R_NilValue;
 }
 
-SEXP rootCommand(SEXP comm)
+SEXP rootCommand(SEXP theComm)
 {
-	std::string command = CHAR(STRING_ELT(comm, 0));
-  int err;
-	
-  gROOT->ProcessLine(command.c_str(), &err);
-	
+  std::string comm = CHAR(STRING_ELT(theComm, 0));
+  gROOT->ProcessLine(comm.c_str());
+  
+  return R_NilValue;
+}
+
+
+SEXP loadRootLibrary(SEXP libName)
+{
+  std::string lib = CHAR(STRING_ELT(libName, 0));
+  int results;
+  
+  results = gSystem->Load(lib.c_str());
+  
   SEXP r = NEW_INTEGER(1);
-  INTEGER(r)[0] = err;
+  INTEGER(r)[0] = results;
 	
   return r;
 }

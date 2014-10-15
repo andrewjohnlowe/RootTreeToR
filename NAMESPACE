@@ -4,7 +4,7 @@ export(rootCommand, openRootChain, setVerbose, getVerbose, getNames,
        clearEventList, toR, toRUser, getEventList, createEventList,
        getName, getDetails, getEntries, clear, isInEventList,
        putIntoEventList, addEventLists, subtractEventLists, writeDFToRoot,
-       openFileWithHists, listDirs, listHists, getHists, niceNames) 
+       openFileWithHists, listDirs, listHists, getHists, niceNames, loadRootLibrary) 
 
 importFrom(methods)
 exportClasses(RootChain, EventList, FileForHists)

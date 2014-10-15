@@ -1,4 +1,10 @@
 These notes are meant for me (Adam) as reminders...
 
 1) If configure.ac is changed, don't forget to run autoconf.
-2) Set the version number in configure.ac
+2) Set the version number in configure.ac, DESCRIPTION, README.txt
+
+To make tarball
+git archive --format=tar --prefix=RootTreeToR-4.2/ v4.2 | gzip > RootTreeToR-4.2.tar.gz
+
+less
+

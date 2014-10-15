@@ -1,4 +1,4 @@
-#ifndef __MET__
+	#ifndef __MET__
 #define __MET__
 
 // This sample, heavily documented, code is callable from toRUser.
@@ -33,7 +33,7 @@ class Met : public TSelector
 {
  public:
   
-  // The constructor must have the argumetns shown here
+  // The constructor must have the argumens shown here
   Met(unsigned int initializeSize, float growthFactor, bool verbose,
       Long64_t* treeOffsets);
 

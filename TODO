@@ -1,0 +1,3 @@
+Retrofit RootTreeToR with Rcpp -- unfortunately, I can't do this right now
+because D0 uses an ancient version of gcc that apparently is incompatible with Rcpp. 
+Bummer!

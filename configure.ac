@@ -1,9 +1,8 @@
-AC_INIT([RootTreeToR], 4.1, [lyon@fnal.gov])
+AC_INIT([RootTreeToR], 4.2, [lyon@fnal.gov])
 
 # ROOTSYS must be set, or else root-config doesn't work
 AC_PATH_PROG([ROOTCONFIG], [root-config], [noroot], [$PATH:$ROOTSYS/bin])
  
-
 # Find the compiler and compiler flags
 : ${R_HOME=`R RHOME`}
 if test -z "${R_HOME}"; then
@@ -21,7 +20,6 @@ SHLIB_LDFLAGS=`"${R_HOME}/bin/R" CMD config SHLIB_LDFLAGS`
 LDFLAGS=`"${R_HOME}/bin/R" CMD config LDFLAGS`
 RLIBS=`"${R_HOME}/bin/R" CMD config --ldflags`
 
-
 # Check that we have a good root-config
 if test "${ROOTCONFIG}" = noroot; then
    AC_MSG_ERROR("Cannot find root-config. Is ROOTSYS set?")
@@ -35,7 +33,7 @@ AC_SUBST([CPPFLAGS], ["-I../inst/include ${root_cflags} ${CPPFLAGS} ${CPICFLAGS}
 
 AC_SUBST([LDFLAGS], ["${SHLIB_CXXLD} ${SHLIB_LDFLAGS} ${LDFLAGS}"])
 
-AC_SUBST([LIBS], ["${root_glibs} -lTreePlayer -lMinuit -lHtml -lGX11 -lGX11TTF -lCint -lCore"])
+AC_SUBST([LIBS], ["${root_glibs} -lTreePlayer -lMinuit -lrt"])
 
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)

@@ -11,46 +11,46 @@
 // Special template functors for setting variables in the data frame
 template<class T, class U> struct set : public std::unary_function<T, void>
 {
-    set(TTreeFormula** variable, unsigned arrayIdx) : 
-	m_variable(variable),
-	m_arrayIdx(arrayIdx)
-	{}
-	
-    void operator()(T* column) { 
-	unsigned i = column->order();
-	if ( m_variable[i]->GetNdim() ) { // have something to store
-	    column->set( static_cast<U>(m_variable[i]->EvalInstance(m_arrayIdx)) );
-	}
-	else {
-	    column->setNA();
-	}
+  set(TTreeFormula** variable, unsigned arrayIdx) : 
+    m_variable(variable),
+    m_arrayIdx(arrayIdx)
+  {}
+  
+  void operator()(T* column) { 
+    unsigned i = column->order();
+    if ( m_variable[i]->GetNdim() ) { // have something to store
+      column->set( static_cast<U>(m_variable[i]->EvalInstance(m_arrayIdx)) );
     }
-    
-    unsigned int m_arrayIdx;
-    TTreeFormula** m_variable;
+    else {
+      column->setNA();
+    }
+  }
+  
+  unsigned int m_arrayIdx;
+  TTreeFormula** m_variable;
 };
 
 // Specialize the string version because it is different
 template<> struct set<RDataFrameStringColumn, std::string> : 
-    public std::unary_function<RDataFrameStringColumn*, void>
+  public std::unary_function<RDataFrameStringColumn*, void>
 {
-    set(TTreeFormula** variable, unsigned arrayIdx) : 
-	m_variable(variable),
-	m_arrayIdx(arrayIdx)
-	{}
-    
-    void operator()(RDataFrameStringColumn* column) { 
-	unsigned i = column->order();
-	if ( m_variable[i]->GetNdim() ) { // have something to store
-	    column->set( std::string(m_variable[i]->PrintValue(0, m_arrayIdx) ) );
-	}
-	else {
-	    column->setNA();
-	}
+  set(TTreeFormula** variable, unsigned arrayIdx) : 
+    m_variable(variable),
+    m_arrayIdx(arrayIdx)
+  {}
+  
+  void operator()(RDataFrameStringColumn* column) { 
+    unsigned i = column->order();
+    if ( m_variable[i]->GetNdim() ) { // have something to store
+      column->set( std::string(m_variable[i]->PrintValue(0, m_arrayIdx) ) );
     }
-    
-    unsigned int m_arrayIdx;
-    TTreeFormula** m_variable;
+    else {
+      column->setNA();
+    }
+  }
+  
+  unsigned int m_arrayIdx;
+  TTreeFormula** m_variable;
 };		
 
 /////////////////
@@ -58,28 +58,28 @@ template<> struct set<RDataFrameStringColumn, std::string> :
 TreeToR::TreeToR(SEXP desiredVariables, const char *selection, 
 		 unsigned int initialSize, float growthFactor, 
                  bool verbose, bool trace):
-    m_desiredVariables(desiredVariables),
-    m_selection(selection),
-    m_df(initialSize, growthFactor, verbose),
-    m_verbose(verbose),
-    m_trace(trace),
-    m_tree(0),
-    m_formulaList(),
-    m_variable(0),
-    m_select(0),
-    m_manager(0),
-    m_isArray(false),
-    m_integerColumns(),
-    m_realColumns(),
-    m_stringColumns(),
-    m_globalEntryColumn(),
-    m_localEntryColumn(),
-    m_treeColumn(),
-    m_idxColumn(),
-    m_treeNumber(0),
-    m_nColumns(0),
-    m_globalEntry(0),
-    m_pastBegin(false)
+  m_desiredVariables(desiredVariables),
+  m_selection(selection),
+  m_df(initialSize, growthFactor, verbose),
+  m_verbose(verbose),
+  m_trace(trace),
+  m_tree(0),
+  m_formulaList(),
+  m_variable(0),
+  m_select(0),
+  m_manager(0),
+  m_isArray(false),
+  m_integerColumns(),
+  m_realColumns(),
+  m_stringColumns(),
+  m_globalEntryColumn(),
+  m_localEntryColumn(),
+  m_treeColumn(),
+  m_idxColumn(),
+  m_treeNumber(0),
+  m_nColumns(0),
+  m_globalEntry(0),
+  m_pastBegin(false)
 {}
 
 /////////////////
@@ -87,10 +87,10 @@ TreeToR::TreeToR(SEXP desiredVariables, const char *selection,
 void TreeToR::Begin(TTree* tree)
 {
   if ( m_trace) REprintf("TreeToR:Trace - In Begin\n");
-
+  
   // Set the tree
   m_tree = tree;
-
+  
   // Reset the global entry #
   m_globalEntry = 0;
   
@@ -152,7 +152,7 @@ void TreeToR::Begin(TTree* tree)
     
   } // ( for over formulas )
   
-    // Create the R data frame columns
+  // Create the R data frame columns
   for ( unsigned int j=0; j < m_nColumns; ++j ) {
     
     char* colName = m_variable[j]->PrintValue(-1); // -1 returns the name
@@ -181,40 +181,40 @@ void TreeToR::Begin(TTree* tree)
   }	 
   
   m_pastBegin = true;
-
+  
   if ( m_trace) REprintf("TreeToR:Trace - Begin - Done\n");
-
+  
 } // Begin(...)
 
 ////////////////////////////////////////
 Bool_t TreeToR::Notify()
 {
   if ( m_trace) REprintf("TreeToR:Trace - In Notify\n");
-
-    // Check if we are ready to call Notify
-    if ( ! m_pastBegin ) {
-      if ( m_trace ) REprintf("TreeToR - Notify called early to load tree - Done\n");
-      return kTRUE;
-    }
-    
-    // New tree!
-    m_treeNumber = m_tree->GetTreeNumber();
-    
-    if ( m_verbose )
-	REprintf("TreeToR - Now in tree %d\n", m_treeNumber);
-    
-    // Update the leaves for this tree
-    if ( m_trace) REprintf("TreeToR:Trace - Notify - update formula leaves\n");
-    if (m_manager) m_manager->UpdateFormulaLeaves(); // the select's manager
-    else {
-	// Don't have a select manager --  update the individual formulas
-	for(unsigned int i=0; i<=m_formulaList.LastIndex(); i++) {
-	    ((TTreeFormula*)m_formulaList.At(i))->UpdateFormulaLeaves();
-	}
-    }
-    
-    if ( m_trace) REprintf("TreeToR:Trace - Notify - Done\n");
+  
+  // Check if we are ready to call Notify
+  if ( ! m_pastBegin ) {
+    if ( m_trace ) REprintf("TreeToR - Notify called early to load tree - Done\n");
     return kTRUE;
+  }
+  
+  // New tree!
+  m_treeNumber = m_tree->GetTreeNumber();
+  
+  if ( m_verbose )
+    REprintf("TreeToR - Now in tree %d\n", m_treeNumber);
+  
+  // Update the leaves for this tree
+  if ( m_trace) REprintf("TreeToR:Trace - Notify - update formula leaves\n");
+  if (m_manager) m_manager->UpdateFormulaLeaves(); // the select's manager
+  else {
+    // Don't have a select manager --  update the individual formulas
+    for(unsigned int i=0; i<=m_formulaList.LastIndex(); i++) {
+      ((TTreeFormula*)m_formulaList.At(i))->UpdateFormulaLeaves();
+    }
+  }
+  
+  if ( m_trace) REprintf("TreeToR:Trace - Notify - Done\n");
+  return kTRUE;
 }
 
 /////////////////////////////////////
@@ -222,8 +222,8 @@ void TreeToR::ProcessFill(Long64_t localEntry)
 {
   if ( m_trace ) REprintf("TreeToR:Trace - In Process Fill local # %d\n", localEntry);
   if ( m_trace ) REprintf("TreeToR:Trace - In Process Fill global # %d\n", m_globalEntry);
-      
-    
+  
+  
   // Determine the number of elements in the variable arrays
   int arraySize = 1;
   if (m_isArray) {				
@@ -316,15 +316,15 @@ void TreeToR::ProcessFill(Long64_t localEntry)
   
   // Increment the global entry
   ++m_globalEntry;
-
+  
   if ( m_trace) REprintf("TreeToR:Trace - Process Fill # %d - DONE\n", localEntry);
-
+  
   
 } // ProcessFill(...)
 
 /////////////////////////////
 TreeToR::~TreeToR() {
-    
-    // Clean up
-    delete [] m_variable;
+  
+  // Clean up
+  delete [] m_variable;
 }

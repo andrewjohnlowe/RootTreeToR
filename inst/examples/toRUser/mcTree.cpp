@@ -155,7 +155,7 @@ void McTree::ProcessFill(Long64_t localEntry)
       
       // Do we want this pdgid?
       if ( m_selectPdgid != 0 && (*pIter).abspdgid() 
-	   != m_selectPdgid ) continue;
+					!= m_selectPdgid ) continue;
       
       // Get parent information
       int nParents = 0;
@@ -169,11 +169,11 @@ void McTree::ProcessFill(Long64_t localEntry)
       
       const TMBMCvtx* parentVtx = (*pIter).getPMCvtx();
       if ( parentVtx ) {
-	nParents = (*parentVtx).nparents();
-	parentX = (*parentVtx).x();
-	parentY = (*parentVtx).y();
-	parentZ = (*parentVtx).z();
-	parentCt = (*parentVtx).ct();
+				nParents = (*parentVtx).nparents();
+				parentX = (*parentVtx).x();
+				parentY = (*parentVtx).y();
+				parentZ = (*parentVtx).z();
+				parentCt = (*parentVtx).ct();
 	
 	if ( nParents > 0 ) {
 	  const TMBMCpart* parentParticle = (*parentVtx).getParent(0);

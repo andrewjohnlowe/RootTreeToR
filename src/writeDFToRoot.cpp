@@ -25,11 +25,11 @@ SEXP writeDFToRoot(SEXP nameR, SEXP titleR, SEXP df, SEXP nrowsR,
 		   SEXP modeR)
 {
   // Extract stuff
-	std::string name = CHAR(STRING_ELT(nameR,0));
-	std::string title = CHAR(STRING_ELT(titleR,0));
+  std::string name = CHAR(STRING_ELT(nameR,0));
+  std::string title = CHAR(STRING_ELT(titleR,0));
   int nrows = INTEGER(nrowsR)[0];
-	std::string rootFileName = CHAR(STRING_ELT(rootFileNameR,0));
-	std::string mode = CHAR(STRING_ELT(modeR,0));
+  std::string rootFileName = CHAR(STRING_ELT(rootFileNameR,0));
+  std::string mode = CHAR(STRING_ELT(modeR,0));
 
   int ncols = LENGTH(df);
 
@@ -73,38 +73,38 @@ SEXP writeDFToRoot(SEXP nameR, SEXP titleR, SEXP df, SEXP nrowsR,
     
     // Fill this branch
     for ( unsigned int row = 0; row < nrows; ++row ) 
-    {
-      switch ( CHAR(STRING_ELT(rt,col))[0] ) {
-      case 'I':
-	*((int*)brAddress) = INTEGER( VECTOR_ELT(df, col) )[row];
-	break;
+      {
+	switch ( CHAR(STRING_ELT(rt,col))[0] ) {
+	case 'I':
+	  *((int*)brAddress) = INTEGER( VECTOR_ELT(df, col) )[row];
+	  break;
 
-      case 'L':
-	if ( LOGICAL( VECTOR_ELT(df, col) )[row] ) {
-	  *((int*)brAddress) = 1;
+	case 'L':
+	  if ( LOGICAL( VECTOR_ELT(df, col) )[row] ) {
+	    *((int*)brAddress) = 1;
+	  }
+	  else {
+	    *((int*)brAddress) = 0;
+	  }
+	  break;
+	
+	case 'D':
+	  *((double*)brAddress) = REAL( VECTOR_ELT(df, col) )[row];
+	  break;
+	
+	case 'C':
+	  strncpy( (char*)brAddress,
+		   CHAR( STRING_ELT(VECTOR_ELT(df, col), row)  ), 254 );
+	  break;
+	
+	default:
+	  // Unknown type
+	  error("Data type not supported");
+	  break;
 	}
-	else {
-	  *((int*)brAddress) = 0;
-	}
-	break;
-	
-      case 'D':
-	*((double*)brAddress) = REAL( VECTOR_ELT(df, col) )[row];
-	break;
-	
-      case 'C':
-	strncpy( (char*)brAddress,
-		 CHAR( STRING_ELT(VECTOR_ELT(df, col), row)  ), 254 );
-	break;
-	
-      default:
-	// Unknown type
-	error("Data type not supported");
-	break;
-      }
 
-      branch->Fill();
-    } // for over rows
+	branch->Fill();
+      } // for over rows
 
     // Clean up
     switch ( CHAR(STRING_ELT(rt,col))[0] ) {
