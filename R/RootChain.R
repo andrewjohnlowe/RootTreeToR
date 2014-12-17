@@ -155,7 +155,7 @@ clearEventList = function(rootChain) {
   .Call("clearEventList", rootChain@manager, PACKAGE="RootTreeToR")
   
   invisible()
-}	
+}       
 
 #################################
 ## processToRResult
@@ -201,8 +201,8 @@ toR = function(rootChain, columns, selection="", nEntries=100, firstEntry=0,
   if ( any(nchar(columns) == 0) ) stop("You must supply a nonblank list of tree variables")
   
   if ( initialSize <= 0 ) stop ("initialSize must be > 0")
-		
-	if ( nEntries <= 0 ) nEntries = 90999999
+                
+        if ( nEntries <= 0 ) nEntries = 90999999
   
   ## Growth factor had better be greater than 1.5 
   if ( growthFactor < 1.5) stop ("growthFactor must be >= 1.5")
@@ -248,7 +248,7 @@ toR = function(rootChain, columns, selection="", nEntries=100, firstEntry=0,
   
   isVerbose = getVerbose(rootChain)
   
-  processToRResult(ans, isVerbose)							   
+  processToRResult(ans, isVerbose)                                                         
 }
 
 ##################################
@@ -259,12 +259,12 @@ toRUser <- function(rootChain, userFunction,
   
   .assertClass(rootChain, "RootChain")
   
-	if ( initialSize <= 0 ) stop ("initialSize must be > 0")
+        if ( initialSize <= 0 ) stop ("initialSize must be > 0")
 
   ## Growth factor had better be greater than 1.5
   if ( growthFactor < 1.5) stop ("growthFactor must be >= 1.5")
-		
-	if ( nEntries <= 0 ) nEntries = 99999099
+                
+        if ( nEntries <= 0 ) nEntries = 99999099
 
   ## Check that C++ symbol is loaded
   if ( ! is.loaded( symbol.C(userFunction) ) ) stop("User function not loaded")
@@ -281,10 +281,10 @@ toRUser <- function(rootChain, userFunction,
   
   isVerbose = getVerbose(rootChain)
   
-  processToRResult(ans, isVerbose)										
+  processToRResult(ans, isVerbose)                                                                              
 }
 
-									 
+                                                                         
 
 #################################
 ## Show

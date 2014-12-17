@@ -31,19 +31,19 @@ RootChainManager::RootChainManager(SEXP treeName, SEXP fileList, bool verbose, b
   if ( ! IS_CHARACTER(treeName) ) error("treeName must be a string");
   if ( GET_LENGTH(treeName) != 1) error("treeName must have length 1");
   if ( ! IS_CHARACTER(fileList) ) error("fileList must be a list of strings");
-	 
+         
   // Get the tree name
   std::string treeNameC = CHAR(STRING_ELT(treeName, 0));
-	 
+         
   if (m_verbose) REprintf("Will read tree %s\n", treeNameC.c_str());
-	 
+         
   // Get the list of files to chain
   if (m_verbose) 
     REprintf("There are %d files to add to the chain\n", GET_LENGTH(fileList) );
-	 
+         
   // Form the chain from the file lists
   m_chain = new TChain(treeNameC.c_str());
-	 
+         
   // Add files
   for ( unsigned int i = 0; i < GET_LENGTH(fileList); ++i ) {    
     std::string fileNameC = CHAR(STRING_ELT(fileList, i) );
@@ -69,65 +69,65 @@ unsigned int RootChainManager::nEntries() const {
 ////////////////////////////////////////////////////////////
 // names -- get the names of the branches and their details
 SEXP RootChainManager::names() const {
-	
+        
   // Advance to the first entry
   //m_chain->GetEntry(0);
   // Above commented out 20090616 - for TMBTrees this crashed root 
   // on an unresolved symbol for allocator<char>. 
-	
+        
   // Get the branches
   TObjArray* branches = m_chain->GetListOfBranches();
-	
+        
   // How many?
   unsigned int nBranches = branches->GetEntriesFast();
-	
+        
   // Make the R list for returning the list of branch and detail names
   SEXP rBranchList, rBranchListNames;
   PROTECT(rBranchList = NEW_LIST(nBranches));
   PROTECT(rBranchListNames = NEW_CHARACTER(nBranches));
-	
+        
   // Loop over the branches in the tree
   for ( unsigned int branchIter = 0; branchIter < nBranches; ++branchIter ) {
-		
+                
     // Get the branch
     TBranch* branch = (TBranch*) branches->UncheckedAt(branchIter);
-		
+                
     // Save away the name of this branch for use as an attribute
     SET_STRING_ELT(rBranchListNames, branchIter, mkChar(branch->GetName()));
-		
+                
     SEXP details = NEW_CHARACTER(1);
     SET_ELEMENT(rBranchList, branchIter, details);
     
     SET_STRING_ELT(details, 0, mkChar( branch->GetTitle() ) );
 
   } // for over branches
-	
+        
   // Set the names attribute
   SET_NAMES(rBranchList, rBranchListNames);
-	
+        
   // Release rBranchList and rBranchListNames
   UNPROTECT(2);
-	
+        
   return rBranchList;
 }
 
 ////////////////////////////////////////////////////////////
 // toR -- convert from root to R via a TSelector
 SEXP RootChainManager::toR(SEXP columns, SEXP selection, 
-			   SEXP nEntries, SEXP firstEntry,
-			   SEXP initialSize, SEXP growthFactor,
-			   SEXP activate)
+                           SEXP nEntries, SEXP firstEntry,
+                           SEXP initialSize, SEXP growthFactor,
+                           SEXP activate)
 {
   // Run over tree with TreeToR
   TreeToR treeToR(columns, CHAR(STRING_ELT(selection, 0)), 
-		  INTEGER(initialSize)[0], 
-		  REAL(growthFactor)[0],
-		  activate,
-		  m_verbose, m_trace);
-	
+                  INTEGER(initialSize)[0], 
+                  REAL(growthFactor)[0],
+                  activate,
+                  m_verbose, m_trace);
+        
   m_chain->Process( &treeToR, "", INTEGER(nEntries)[0], 
-		    INTEGER(firstEntry)[0]);
-	
+                    INTEGER(firstEntry)[0]);
+        
   return treeToR.rDataFrame();
 }
 
@@ -136,15 +136,15 @@ SEXP RootChainManager::toR(SEXP columns, SEXP selection,
 SEXP RootChainManager::makeEventList(SEXP name, SEXP selection, SEXP nEntries, SEXP firstEntry)
 {
   if (m_verbose) REprintf("Running TDraw with |%s| |%s| %d %d\n", 
-			  CHAR(STRING_ELT(name, 0)),
-			  CHAR(STRING_ELT(selection, 0)),
-			  INTEGER(nEntries)[0], INTEGER(firstEntry)[0] );
-			  
+                          CHAR(STRING_ELT(name, 0)),
+                          CHAR(STRING_ELT(selection, 0)),
+                          INTEGER(nEntries)[0], INTEGER(firstEntry)[0] );
+                          
 
   m_chain->Draw( CHAR(STRING_ELT(name, 0)), 
-		 CHAR(STRING_ELT(selection, 0)), "",
-		 INTEGER(nEntries)[0], INTEGER(firstEntry)[0] );
-	
+                 CHAR(STRING_ELT(selection, 0)), "",
+                 INTEGER(nEntries)[0], INTEGER(firstEntry)[0] );
+        
   return R_NilValue;
 }
 
@@ -153,9 +153,9 @@ SEXP RootChainManager::makeEventList(SEXP name, SEXP selection, SEXP nEntries, S
 SEXP RootChainManager::applyEventList(TEventList* el)
 {
   m_chain->SetEventList(el);
-	
+        
   if (m_verbose) REprintf("Narrow chain to event list %s\n", el->GetName() );
-	
+        
   return R_NilValue;
 }
 
@@ -164,12 +164,12 @@ SEXP RootChainManager::applyEventList(TEventList* el)
 SEXP RootChainManager::getEventListName()
 {
   TEventList* ev = m_chain->GetEventList();
-	
+        
   if (! ev ) return R_NilValue;
-	
+        
   SEXP r = NEW_CHARACTER(1);
   SET_STRING_ELT(r, 0, mkChar(ev->GetName()) );
-	
+        
   return r;
 }
 
@@ -178,8 +178,8 @@ SEXP RootChainManager::getEventListName()
 SEXP RootChainManager::clearEventList()
 {
   m_chain->SetEventList(0);
-	
+        
   if (m_verbose) REprintf("Removing event list restriction on chain\n");
-	
+        
   return R_NilValue;
 }

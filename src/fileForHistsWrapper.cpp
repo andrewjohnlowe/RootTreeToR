@@ -52,7 +52,7 @@ SEXP wrapTFileForHistsPointer(TFile* f)
   SEXP val = R_MakeExternalPtr(f, fh_type_tag, R_NilValue);
   
   R_RegisterCFinalizerEx(val, 
-			 (R_CFinalizer_t)deleteFileForHists, TRUE);
+                         (R_CFinalizer_t)deleteFileForHists, TRUE);
   
   return val;
 }
@@ -162,7 +162,7 @@ SEXP namesMatchingClass(SEXP fileForHists, SEXP directoryR, SEXP classTypeR)
 }
    
 ////////////////////////////////////////
-// getHists - Get Histograms	   
+// getHists - Get Histograms       
 SEXP getHistsR(SEXP fileForHists, SEXP histNames, SEXP directoryR)
 {
   TFile* f = checkForFileForHistsWrapper(fileForHists);
@@ -239,12 +239,12 @@ SEXP getHistsR(SEXP fileForHists, SEXP histNames, SEXP directoryR)
 
     else {
       REprintf("!! Do not know how to handle %s of class %s !!\n", 
-	       name.c_str(), className);
+               name.c_str(), className);
       continue;
     }
 
   } // For over names
-	
+        
   // Restore the root old directory
   if ( ! f->cd(oldDirectory) ) {
     error("namesMatchingClass: cd to old directory failed");
@@ -260,7 +260,7 @@ SEXP getHistsR(SEXP fileForHists, SEXP histNames, SEXP directoryR)
 //////////////////////////////////////////
 // addNumericVector
 SEXP addNumericVector(SEXP data, SEXP dataNames, 
-		      unsigned int j, int n, const char* name)
+                      unsigned int j, int n, const char* name)
 {
   SET_ELEMENT(data, j, NEW_NUMERIC(n));
   SET_STRING_ELT(dataNames, j, mkChar(name));
@@ -270,7 +270,7 @@ SEXP addNumericVector(SEXP data, SEXP dataNames,
 //////////////////////////////////////////
 // addCharVector
 SEXP addCharVector(SEXP data, SEXP dataNames, 
-		   unsigned int j, int n, const char* name)
+                   unsigned int j, int n, const char* name)
 {
   SET_ELEMENT(data, j, NEW_STRING(n));
   SET_STRING_ELT(dataNames, j, mkChar(name));
@@ -322,7 +322,7 @@ unsigned int addXAxis(SEXP data, SEXP dataNames, unsigned int j, TH1* hist)
   // Done
   return j;
 }
-		 
+                 
   
 //////////////////////////////////////////////////
 // addXContents

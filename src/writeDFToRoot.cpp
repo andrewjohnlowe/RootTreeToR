@@ -14,15 +14,15 @@
 
 extern "C" {
   SEXP writeDFToRoot(SEXP nameR, SEXP titleR, SEXP df, SEXP nrowsR,
-		     SEXP colNames, 
-		     SEXP rt, SEXP branchStrings, SEXP rootFileNameR, 
-		     SEXP modeR);
+                     SEXP colNames, 
+                     SEXP rt, SEXP branchStrings, SEXP rootFileNameR, 
+                     SEXP modeR);
 }
 
 SEXP writeDFToRoot(SEXP nameR, SEXP titleR, SEXP df, SEXP nrowsR,
-		   SEXP colNames,
-		   SEXP rt, SEXP branchStrings, SEXP rootFileNameR,
-		   SEXP modeR)
+                   SEXP colNames,
+                   SEXP rt, SEXP branchStrings, SEXP rootFileNameR,
+                   SEXP modeR)
 {
   // Extract stuff
   std::string name = CHAR(STRING_ELT(nameR,0));
@@ -68,42 +68,42 @@ SEXP writeDFToRoot(SEXP nameR, SEXP titleR, SEXP df, SEXP nrowsR,
 
     // Create the branch
     TBranch* branch = tree->Branch( CHAR(STRING_ELT(colNames,col)),
-				    brAddress, 
-				    CHAR(STRING_ELT(branchStrings,col)) );
+                                    brAddress, 
+                                    CHAR(STRING_ELT(branchStrings,col)) );
     
     // Fill this branch
     for ( unsigned int row = 0; row < nrows; ++row ) 
       {
-	switch ( CHAR(STRING_ELT(rt,col))[0] ) {
-	case 'I':
-	  *((int*)brAddress) = INTEGER( VECTOR_ELT(df, col) )[row];
-	  break;
+        switch ( CHAR(STRING_ELT(rt,col))[0] ) {
+        case 'I':
+          *((int*)brAddress) = INTEGER( VECTOR_ELT(df, col) )[row];
+          break;
 
-	case 'L':
-	  if ( LOGICAL( VECTOR_ELT(df, col) )[row] ) {
-	    *((int*)brAddress) = 1;
-	  }
-	  else {
-	    *((int*)brAddress) = 0;
-	  }
-	  break;
-	
-	case 'D':
-	  *((double*)brAddress) = REAL( VECTOR_ELT(df, col) )[row];
-	  break;
-	
-	case 'C':
-	  strncpy( (char*)brAddress,
-		   CHAR( STRING_ELT(VECTOR_ELT(df, col), row)  ), 254 );
-	  break;
-	
-	default:
-	  // Unknown type
-	  error("Data type not supported");
-	  break;
-	}
+        case 'L':
+          if ( LOGICAL( VECTOR_ELT(df, col) )[row] ) {
+            *((int*)brAddress) = 1;
+          }
+          else {
+            *((int*)brAddress) = 0;
+          }
+          break;
+        
+        case 'D':
+          *((double*)brAddress) = REAL( VECTOR_ELT(df, col) )[row];
+          break;
+        
+        case 'C':
+          strncpy( (char*)brAddress,
+                   CHAR( STRING_ELT(VECTOR_ELT(df, col), row)  ), 254 );
+          break;
+        
+        default:
+          // Unknown type
+          error("Data type not supported");
+          break;
+        }
 
-	branch->Fill();
+        branch->Fill();
       } // for over rows
 
     // Clean up

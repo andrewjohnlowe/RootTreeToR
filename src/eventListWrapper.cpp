@@ -72,7 +72,7 @@ SEXP wrapTEventListPointer(TEventList* ptr, bool manageItsMemory)
   
   if ( manageItsMemory ) {
     R_RegisterCFinalizerEx(val, 
-			   (R_CFinalizer_t)deleteEventList, TRUE);
+                           (R_CFinalizer_t)deleteEventList, TRUE);
   }
   
   return val;
@@ -220,9 +220,9 @@ SEXP addEventLists(SEXP eventList1, SEXP eventList2)
 {
   TEventList* el1 = checkForEventListWrapper(eventList1);
   TEventList* el2 = checkForEventListWrapper(eventList2);
-	
+        
   el1->Add(el2);
-	
+        
   return R_NilValue;
 }
 
@@ -232,9 +232,9 @@ SEXP subtractEventLists(SEXP eventList1, SEXP eventList2)
 {
   TEventList* el1 = checkForEventListWrapper(eventList1);
   TEventList* el2 = checkForEventListWrapper(eventList2);
-	
+        
   el1->Subtract(el2);
-	
+        
   return R_NilValue;
 }
 
@@ -243,10 +243,10 @@ SEXP subtractEventLists(SEXP eventList1, SEXP eventList2)
 //  Entries not in eventList2 are removed from eventList1
 //SEXP intersectEventLists(SEXP eventList1, SEXP eventList2)
 //{
-//	TEventList* el1 = checkForEventListWrapper(eventList1);
-//	TEventList* el2 = checkForEventListWrapper(eventList2);
-//	
-//	el1->Intersect(el2);
-//	
-//	return R_NilValue;
+//      TEventList* el1 = checkForEventListWrapper(eventList1);
+//      TEventList* el2 = checkForEventListWrapper(eventList2);
+//      
+//      el1->Intersect(el2);
+//      
+//      return R_NilValue;
 //}

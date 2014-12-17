@@ -19,20 +19,20 @@ void RDataFrameColumn::resizeColumn(unsigned int newSize)
 RDataFrameColumn::~RDataFrameColumn()
 {
   if ( beVerbose() ) REprintf("RDataFrame - Deleting column %s\n", 
-			      name().c_str() );
-	
+                              name().c_str() );
+        
   // Unprotect our vector
   UNPROTECT(1);
 }
 //////////////////////////////////////////////////////////
 // Implementation of RDataFrameIntegerColumn
 void RDataFrameIntegerColumn::makeColumn(unsigned int initialSize)
-{	
+{       
   PROTECT_WITH_INDEX( m_column = allocVector( INTSXP, initialSize ), 
-		      &m_protectIndex );
+                      &m_protectIndex );
 
   if ( beVerbose() ) REprintf("RDataFrame - Creating integer column %s\n", 
-			      name().c_str());
+                              name().c_str());
 
 }
 
@@ -74,9 +74,9 @@ void RDataFrameIntegerColumn::setNA()
 void RDataFrameIntegerColumn::commitRow(unsigned int row)
 {
   if ( ! m_isSet ) throw RDataFrameColumn_NotSetException( name() );
-	
+        
   INTEGER( m_column )[row] = m_value;
-	
+        
   m_isSet = false;
 }
 
@@ -85,10 +85,10 @@ void RDataFrameIntegerColumn::commitRow(unsigned int row)
 void RDataFrameRealColumn::makeColumn(unsigned int initialSize)
 {
   PROTECT_WITH_INDEX( m_column = allocVector( REALSXP, initialSize ), 
-		      &m_protectIndex );
+                      &m_protectIndex );
 
   if ( beVerbose() ) REprintf("RDataFrame - Creating real column %s\n", 
-			      name().c_str());		
+                              name().c_str());          
 }
 
 template<class T> 
@@ -117,9 +117,9 @@ void RDataFrameRealColumn::setNA()
 void RDataFrameRealColumn::commitRow(unsigned int row)
 {
   if ( ! m_isSet ) throw RDataFrameColumn_NotSetException( name() );
-	
+        
   REAL( m_column )[row] = m_value;
-	
+        
   m_isSet = false;
 }
 
@@ -128,10 +128,10 @@ void RDataFrameRealColumn::commitRow(unsigned int row)
 void RDataFrameStringColumn::makeColumn(unsigned int initialSize)
 {
   if ( beVerbose() ) REprintf("RDataFrame - Creating string column %s\n", 
-			      name().c_str());
-	
+                              name().c_str());
+        
   PROTECT_WITH_INDEX( m_column = allocVector( STRSXP, initialSize ), 
-		      &m_protectIndex );
+                      &m_protectIndex );
 }
 
 template<class T> 
@@ -167,7 +167,7 @@ void RDataFrameStringColumn::commitRow(unsigned int row)
   else {
     SET_STRING_ELT( m_column, row, NA_STRING );
   }
-	
+        
   m_isSet = false;
 }
 
@@ -176,10 +176,10 @@ void RDataFrameStringColumn::commitRow(unsigned int row)
 void RDataFrameLogicalColumn::makeColumn(unsigned int initialSize)
 {
   if ( beVerbose() ) REprintf("RDataFrame - Creating logical column %s\n", 
-			      name().c_str());
-		
+                              name().c_str());
+                
   PROTECT_WITH_INDEX( m_column = allocVector( LGLSXP, initialSize ), 
-		      &m_protectIndex );
+                      &m_protectIndex );
 }
 
 template<class T> 
@@ -198,9 +198,9 @@ void RDataFrameLogicalColumn::set(bool value)
 void RDataFrameLogicalColumn::commitRow(unsigned int row)
 {
   if ( ! m_isSet ) throw RDataFrameColumn_NotSetException( name() );
-	
+        
   LOGICAL( m_column )[row] = m_value;
-	
+        
   m_isSet = false;
 }
 
@@ -209,7 +209,7 @@ void RDataFrameLogicalColumn::commitRow(unsigned int row)
 ////////////////////////////////////////////////
 // RDataFrame implementation
 RDataFrame::RDataFrame(unsigned int initialSize, float growthFactor,
-		       bool verbose) :
+                       bool verbose) :
   m_reservedSize(initialSize),
   m_currentSize(0),
   m_growthFactor(growthFactor),
@@ -219,10 +219,10 @@ RDataFrame::RDataFrame(unsigned int initialSize, float growthFactor,
 {
   if ( initialSize == 0 ) throw RDataFrameException("intialSize must be > 0");
   if ( growthFactor <= 1.5 ) throw RDataFrameException("growthFactor must be > 1.5");
-	
+        
   if ( m_verbose ) {
     REprintf("RDataFrame::ctor - Creating RDataFrame with size %d, growth %f\n", 
-	     m_reservedSize, m_growthFactor);
+             m_reservedSize, m_growthFactor);
   }
 }
 
@@ -231,16 +231,16 @@ T* RDataFrame::addColumn(std::string name)
 {
   // If we've already committed some data, can't do this
   if ( m_currentSize > 0 ) throw RDataFrameException("Cannot add more columns after a commit");
-	
+        
   // Make the column
   T* column = new T(name, m_nCols, m_reservedSize, m_verbose);
-	
+        
   // Increase the order number
   m_nCols++;
-	
+        
   // Save the column away
   m_columns.push_back(column);
-	
+        
   // Return the new column
   return column;
 }
@@ -273,9 +273,9 @@ void RDataFrame::resizeVectors()
 
   if ( beVerbose() ) {
     REprintf("RDataFrame::resizeVectors - Reached size of %d, new size %d\n",
-	     m_currentSize, m_reservedSize);
+             m_currentSize, m_reservedSize);
   }
-	
+        
   // Grow the vectors
   for_each( m_columns.begin(), m_columns.end(), resizeOnColumn(m_reservedSize) );
 }
@@ -284,13 +284,13 @@ void RDataFrame::commitRow()
 {
   // Error if there are no columns defined
   if ( m_nCols == 0 ) throw RDataFrameException("There are no columns defined to commit");
-		
+                
   // If our size has exceeded reserved size, then grow the vectors
   if ( m_currentSize >= m_reservedSize) resizeVectors();
-		
+                
   // All is well, commit the row
   for_each( m_columns.begin(), m_columns.end(), commitRowOnColumn(m_currentSize) );
-	
+        
   // Grow the size
   m_currentSize++;
 }
@@ -298,21 +298,21 @@ void RDataFrame::commitRow()
 SEXP RDataFrame::dataFrameInAnsForm() 
 {
   if ( m_nCols == 0 ) throw RDataFrameException("There are no columns defined");
-		
+                
   // Make the data frame structure
   // Create the "answer" list
   SEXP ans;
   PROTECT( ans = NEW_LIST(3) );
-	
+        
   // Set the elements
   SET_ELEMENT(ans, 0, NEW_LIST(m_nCols)); // The data
   SET_ELEMENT(ans, 1, NEW_STRING(m_nCols)); // The column names
   SET_ELEMENT(ans, 2, NEW_INTEGER(1)); // The true number of rows
-	 
+         
   // Set the data and name columns
   SEXP data = VECTOR_ELT(ans, 0);
   SEXP data_names = VECTOR_ELT(ans, 1);
-	
+        
   // Fill these lists
   for ( unsigned int i=0; i < m_nCols; ++i )
     {
@@ -321,10 +321,10 @@ SEXP RDataFrame::dataFrameInAnsForm()
     }
   
   SET_NAMES(data, data_names);
-	
+        
   // Set the number of rows
   INTEGER( VECTOR_ELT(ans, 2) )[0] = m_currentSize;
-	
+        
   if ( beVerbose() )
     { 
       REprintf("RDataFrame - Saved %d rows\n", m_currentSize);
@@ -332,7 +332,7 @@ SEXP RDataFrame::dataFrameInAnsForm()
   
   // No longer need protection from the garbage collector
   UNPROTECT(1);
- 	
+        
   return ans;
 }
 

@@ -51,13 +51,13 @@ template<> struct set<RDataFrameStringColumn, std::string> :
   
   unsigned int m_arrayIdx;
   TTreeFormula** m_variable;
-};		
+};              
 
 /////////////////
 // C'tor
 TreeToR::TreeToR(SEXP desiredVariables, const char *selection, 
-		 unsigned int initialSize, float growthFactor, 
-		 SEXP activate,
+                 unsigned int initialSize, float growthFactor, 
+                 SEXP activate,
                  bool verbose, bool trace):
   m_desiredVariables(desiredVariables),
   m_selection(selection),
@@ -149,8 +149,8 @@ void TreeToR::Begin(TTree* tree)
   // -- Create TreeForumlas for each column
   for (unsigned int i = 0; i<m_nColumns; i++) {
     m_variable[i] = new TTreeFormula("Var1",
-				     CHAR(STRING_ELT(m_desiredVariables,i)), 
-				     m_tree);
+                                     CHAR(STRING_ELT(m_desiredVariables,i)), 
+                                     m_tree);
     
     // Add to our formula list
     m_formulaList.Add(m_variable[i]);
@@ -166,7 +166,7 @@ void TreeToR::Begin(TTree* tree)
       
       // Add our variable forumlas to the manager
       for(unsigned int i=0; i<=m_formulaList.LastIndex(); i++) {
-	m_manager->Add((TTreeFormula*)m_formulaList.At(i));
+        m_manager->Add((TTreeFormula*)m_formulaList.At(i));
       }
       
       m_manager->Sync();
@@ -212,10 +212,10 @@ void TreeToR::Begin(TTree* tree)
   m_treeColumn = m_df.addIntegerColumn("treeNum");
   
   // If necessary, add an index column for arrays
-  m_idxColumn = 0;	 
+  m_idxColumn = 0;       
   if (m_isArray) { // Add the idx column if is in an array
     m_idxColumn = m_df.addIntegerColumn("idx");
-  }	 
+  }      
   
   m_pastBegin = true;
   
@@ -255,7 +255,7 @@ Bool_t TreeToR::Notify()
 }
 
 /////////////////////////////////////
-void TreeToR::ProcessFill(Long64_t localEntry)
+void TreeToR::Process(Long64_t localEntry)
 {
   if ( m_trace ) REprintf("TreeToR:Trace - In Process Fill local # %d\n", localEntry);
   if ( m_trace ) REprintf("TreeToR:Trace - In Process Fill global # %d\n", m_globalEntry);
@@ -263,7 +263,7 @@ void TreeToR::ProcessFill(Long64_t localEntry)
   
   // Determine the number of elements in the variable arrays
   int arraySize = 1;
-  if (m_isArray) {				
+  if (m_isArray) {                              
     
     // We have a variable array!
     if (m_manager) {
@@ -271,9 +271,9 @@ void TreeToR::ProcessFill(Long64_t localEntry)
     } 
     else {
       for (unsigned int i=0; i<m_nColumns; i++) {
-	if (arraySize < m_variable[i]->GetNdata() ) {
-	  arraySize = m_variable[i]->GetNdata();
-	}
+        if (arraySize < m_variable[i]->GetNdata() ) {
+          arraySize = m_variable[i]->GetNdata();
+        }
       }
       if (m_select && m_select->GetNdata()==0) arraySize = 0;
     }
@@ -289,7 +289,7 @@ void TreeToR::ProcessFill(Long64_t localEntry)
     // Check the selection
     if (m_select) {
       if (m_select->EvalInstance(arrayIndex) == 0) {
-	continue; // This row fails the selection, don't include it
+        continue; // This row fails the selection, don't include it
       }
     }
     
@@ -300,9 +300,9 @@ void TreeToR::ProcessFill(Long64_t localEntry)
     
     else if (!loaded) { 
       // Ensure that proper branches are loaded if the first row fails
-      // the selection					  
+      // the selection                                    
       for (unsigned int i=0; i<m_nColumns; i++) {
-	m_variable[i]->EvalInstance(0);
+        m_variable[i]->EvalInstance(0);
       }
       loaded = true;
     }
@@ -312,26 +312,26 @@ void TreeToR::ProcessFill(Long64_t localEntry)
     // Store the data
     // First integers
     std::for_each(m_integerColumns.begin(),
-		  m_integerColumns.end(),
-		  set<RDataFrameIntegerColumn, int>(m_variable, arrayIndex)
-		  );
+                  m_integerColumns.end(),
+                  set<RDataFrameIntegerColumn, int>(m_variable, arrayIndex)
+                  );
     
     if ( m_trace) REprintf("TreeToR:Trace - Process Fill - D %d\n", arrayIndex);
     
     // Then reals
     std::for_each(m_realColumns.begin(),
-		  m_realColumns.end(),
-		  set<RDataFrameRealColumn, double>(m_variable, arrayIndex)
-		  );
+                  m_realColumns.end(),
+                  set<RDataFrameRealColumn, double>(m_variable, arrayIndex)
+                  );
     
     if ( m_trace) REprintf("TreeToR:Trace - Process Fill - E %d\n", arrayIndex);
     
     // And finally strings
     std::for_each(m_stringColumns.begin(),
-		  m_stringColumns.end(),
-		  set<RDataFrameStringColumn, std::string>(
-							   m_variable, arrayIndex)
-		  );
+                  m_stringColumns.end(),
+                  set<RDataFrameStringColumn, std::string>(
+                                                           m_variable, arrayIndex)
+                  );
     
     // Write the entry and tree number number
     m_globalEntryColumn->set( m_globalEntry );
@@ -356,8 +356,8 @@ void TreeToR::ProcessFill(Long64_t localEntry)
   
   if ( m_trace) REprintf("TreeToR:Trace - Process Fill # %d - DONE\n", localEntry);
   
-  
-} // ProcessFill(...)
+  return kTRUE;
+} // Process(...)
 
 //////////////////////////////
 void TreeToR::Terminate() {

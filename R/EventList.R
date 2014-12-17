@@ -146,11 +146,11 @@ subtractEventLists <- function(eventList1, eventList2) {
 #################
 # intersectEventLists -- intersect eventList2 with eventList1
 #intersectEventLists <- function(eventList1, eventList2) {
-#	.assertClass(eventList1, "EventList")
-#	.assertClass(eventList2, "EventList")
-#	
-#	.Call("intersectEventLists", eventList1@ptr, eventList2@ptr, 
-#		    PACKAGE="RootTreeToR")
+#       .assertClass(eventList1, "EventList")
+#       .assertClass(eventList2, "EventList")
+#       
+#       .Call("intersectEventLists", eventList1@ptr, eventList2@ptr, 
+#                   PACKAGE="RootTreeToR")
 #
 #  invisible()
 #}
