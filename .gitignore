@@ -1,11 +1,10 @@
-#xcode noise
-RootTreeToR.xcodeProj/build/*
-*.pbxuser
-*.mode1v3
-
-# Mac noise
-.DS_store
-profile
 .Rproj.user
 .Rhistory
 .RData
+
+autom4te.cache/
+config.log
+config.status
+src/*.o
+src/RootTreeToR.so
+src/Makevars
