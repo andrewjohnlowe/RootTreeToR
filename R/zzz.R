@@ -7,7 +7,7 @@
   require(methods)
   
   ## Load the RootTreeToR shared library
-  print("Loading ROOT")
+  packageStartupMessage("Loading ROOT")
   
   ## Note that library is loaded with useDynLib(RootTreeToR) in the NAMESPACE file
   ##library.dynam("RootTreeToR", package, lib.loc)
@@ -28,5 +28,5 @@
 .onUnload <- function(libpath) {
   
   ## Unload the RootTreeToR library
-  library.dynam.unload("RootTreeToR", lib.loc)
+  library.dynam.unload("RootTreeToR", libpath)
 }

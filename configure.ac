@@ -26,14 +26,14 @@ if test "${ROOTCONFIG}" = noroot; then
 fi
 
 # Get the location of root stuff
-root_cflags=`${ROOTCONFIG} --cflags | sed s/-Wno-long-double//`
+root_cflags="`${ROOTCONFIG} --cflags | sed s/-Wno-long-double//` -Wno-long-long"
 root_glibs=`${ROOTCONFIG} --glibs`
 
 AC_SUBST([CPPFLAGS], ["-I../inst/include ${root_cflags} ${CPPFLAGS} ${CPICFLAGS} ${RINCLUDES}"])
 
 AC_SUBST([LDFLAGS], ["${SHLIB_CXXLD} ${SHLIB_LDFLAGS} ${LDFLAGS}"])
 
-AC_SUBST([LIBS], ["${root_glibs} -lTreePlayer -lMinuit -lrt"])
+AC_SUBST([LIBS], ["${root_glibs} -lTreePlayer -lMinuit"])
 
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)

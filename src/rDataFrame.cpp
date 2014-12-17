@@ -224,7 +224,7 @@ RDataFrame::RDataFrame(unsigned int initialSize, float growthFactor,
     REprintf("RDataFrame::ctor - Creating RDataFrame with size %d, growth %f\n", 
 	     m_reservedSize, m_growthFactor);
   }
-};
+}
 
 template <class T>
 T* RDataFrame::addColumn(std::string name)

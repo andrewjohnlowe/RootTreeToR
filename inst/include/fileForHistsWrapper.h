@@ -16,7 +16,7 @@ extern "C"
   SEXP openFileForHists(SEXP rootFileNameR);
   SEXP namesMatchingClass(SEXP fileForHists, SEXP directoryR, SEXP classTypeR);
   SEXP getHistsR(SEXP fileForHists, SEXP histNames, SEXP directoryR);
-};
+}
 
 TFile* checkForFileForHistsWrapper(SEXP ptr);
 
