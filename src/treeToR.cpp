@@ -190,10 +190,14 @@ void TreeToR::Begin(TTree* tree)
     
     char* colName = m_variable[j]->PrintValue(-1); // -1 returns the name
     
-    if      ( m_variable[j]->IsInteger() ) // An integer
-      m_integerColumns.push_back( m_df.addIntegerColumn(colName) );
-    
-    else if ( m_variable[j]->IsString()  )  // A string
+    if ( m_variable[j]->IsInteger() ) {// A single leaf integer
+      if (strcmp(m_variable[j]->GetLeaf(0)->GetTypeName(), "Long64_t") == 0 ||
+          strcmp(m_variable[j]->GetLeaf(0)->GetTypeName(), "ULong64_t") == 0)
+        m_realColumns.push_back( m_df.addRealColumn(colName) );
+      else
+        m_integerColumns.push_back( m_df.addIntegerColumn(colName) );
+      
+    } else if ( m_variable[j]->IsString()  )  // A string
       m_stringColumns.push_back( m_df.addStringColumn(colName) );
     
     else  // Must be real
