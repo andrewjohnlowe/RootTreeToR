@@ -25,7 +25,7 @@ class TreeToR : public TSelector {
     
   virtual void Begin(TTree* tree);
   virtual Bool_t Notify();
-  virtual void ProcessFill(Long64_t localEntry);
+  virtual Bool_t Process(Long64_t localEntry);
   virtual void Terminate();
         
   SEXP rDataFrame() { return m_df.dataFrameInAnsForm(); }

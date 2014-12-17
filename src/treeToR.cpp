@@ -255,7 +255,7 @@ Bool_t TreeToR::Notify()
 }
 
 /////////////////////////////////////
-void TreeToR::Process(Long64_t localEntry)
+Bool_t TreeToR::Process(Long64_t localEntry)
 {
   if ( m_trace ) REprintf("TreeToR:Trace - In Process Fill local # %d\n", localEntry);
   if ( m_trace ) REprintf("TreeToR:Trace - In Process Fill global # %d\n", m_globalEntry);
