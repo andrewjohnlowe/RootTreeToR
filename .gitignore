@@ -6,3 +6,6 @@ RootTreeToR.xcodeProj/build/*
 # Mac noise
 .DS_store
 profile
+.Rproj.user
+.Rhistory
+.RData
