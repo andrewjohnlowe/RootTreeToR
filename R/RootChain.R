@@ -191,7 +191,7 @@ processToRResult = function(ans, isVerbose) {
 #################################
 ## toR
 toR = function(rootChain, columns, selection="", nEntries=100, firstEntry=0,
-  initialSize=1000, growthFactor=1.7, prefix="") { 
+  initialSize=1000, growthFactor=1.7, prefix="", activate=character(0)) { 
   
   .assertClass(rootChain, "RootChain")
   
@@ -211,6 +211,8 @@ toR = function(rootChain, columns, selection="", nEntries=100, firstEntry=0,
   
   if ( ! is.character(selection) ) stop("selection must be a string")
   if ( length(selection) > 1 ) stop("selection must have only one element")
+
+  if ( ! is.character(activate) ) stop("activate must be a character vector")
   
   ## Handle the columns
   ## If there is a ':' in the columns, then they must be split up
@@ -222,6 +224,16 @@ toR = function(rootChain, columns, selection="", nEntries=100, firstEntry=0,
   ## Add the prefix if necessary
   if ( ! missing(prefix) ) {
     columns = paste(prefix, columns, sep=".")
+
+    if ( ! missing(activate) ) {
+      stop("You cannot set both prefix and activate options simultaneously")
+    }
+
+    activate <- prefix
+  }
+
+  if ( ! missing(activate) ) {
+    activate <- paste(activate, "*", sep="")
   }
   
   ## Get the data from Root
@@ -230,7 +242,8 @@ toR = function(rootChain, columns, selection="", nEntries=100, firstEntry=0,
     as.integer(nEntries), 
     as.integer(firstEntry),
     as.integer(initialSize),
-    as.numeric(growthFactor), 
+    as.numeric(growthFactor),
+    activate,
     PACKAGE="RootTreeToR")
   
   isVerbose = getVerbose(rootChain)

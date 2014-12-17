@@ -6,7 +6,7 @@
 }
 \usage{
 toR(rootChain, columns, selection = "", nEntries = 100,
-    firstEntry = 0, initialSize = 1000, growthFactor = 1.7, prefix = "")
+    firstEntry = 0, initialSize = 1000, growthFactor = 1.7, prefix = "", activate="")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,8 +23,20 @@ toR(rootChain, columns, selection = "", nEntries = 100,
   \item{growthFactor}{ If the guess for the number of rows in the
                        resulting \R data frame is too low, expand
 		       by this factor.}
-  \item{prefix}{ A prefix to attach to each item in the \code{columns}
-    argument. The "." is added automatically.}
+  \item{prefix}{ A prefix (e.g. the branch name) to attach to each item in the \code{columns}
+    argument. The "." is added automatically. If you give a prefix, then only that branch
+    will be activated (do not use the \code{activate} option).}
+  \item{activate}{ Blank or a character vector of branch names. 
+  By default (leaving this option blank), Root will read all branches in a tree when looping over the entries (it will call 
+  \code{tree->SetBranchStatus("*", 1)}. 
+  If you are reading data from a small number of branches (e.g. 1), then it may be much more efficient to tell
+  root to only "activate" the particular branches you care about. If you give a character vector of
+  branch names, then Root will load the data for those branches, 
+  not the others. If you use the \code{prefix} option, then you do not need to fill in this option; the 
+  branch you specify in \code{prefix} will be activated and the rest will be turned off. A "*" will automatically 
+  be added to the end of the branch names you specify (this is needed for split branches). If you use "-" for the 
+  option, then no branch activation-deactivation will be performed. That way you can use \code{\link{rootCommand}}
+  to activate/deactivate branches and \code{toR} will honor that configuration.}
 }
 \details{
   This \code{toR} function brings data from the Root Chain into \R.
@@ -182,6 +194,9 @@ names(df3)
 ## Use niceNames to clean them up
 names(df3) = niceNames(df3)
 names(df3)
+
+## You can also only read from certain branches
+df4 = toR(rt, c("evNums.evNums", "eCh.eCh"), activate=c("evNums", "eCh"))
 }
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the

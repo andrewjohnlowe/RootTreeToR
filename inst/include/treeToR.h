@@ -20,11 +20,13 @@ class TreeToR : public TSelector {
  public:
   TreeToR(SEXP desiredVariables, const char *selection, 
 	  unsigned int initialSize, float growthFactor, 
+	  SEXP activate,
           bool verbose, bool trace);
     
   virtual void Begin(TTree* tree);
   virtual Bool_t Notify();
   virtual void ProcessFill(Long64_t localEntry);
+  virtual void Terminate();
 	
   SEXP rDataFrame() { return m_df.dataFrameInAnsForm(); }
 	
@@ -34,6 +36,8 @@ class TreeToR : public TSelector {
 		
   SEXP m_desiredVariables;
   std::string m_selection;
+
+  SEXP m_activate;
 	
   RDataFrame m_df; // The data frame
   TTree* m_tree;
@@ -44,6 +48,8 @@ class TreeToR : public TSelector {
 		
   bool m_verbose;
   bool m_trace;
+  
+  bool m_doActivate;
 		
   unsigned int m_nColumns;
 		

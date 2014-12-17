@@ -161,13 +161,13 @@ SEXP names(SEXP manager)
 /////////////////////////////////////////
 // toR -- convert Root to R
 SEXP toR(SEXP manager, SEXP columns, SEXP selection, SEXP nEntries, 
-	 SEXP firstEntry, SEXP initialSize, SEXP growthFactor)
+	 SEXP firstEntry, SEXP initialSize, SEXP growthFactor, SEXP activate)
 {
   checkForRootChainManagerPtr(manager);
   RootChainManager* rcm = (RootChainManager*) R_ExternalPtrAddr(manager);
 
   return rcm->toR(columns, selection, nEntries, firstEntry, 
-		  initialSize, growthFactor);
+		  initialSize, growthFactor, activate);
 }
 
 ///////////////////////////////////////////

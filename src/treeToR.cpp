@@ -57,12 +57,15 @@ template<> struct set<RDataFrameStringColumn, std::string> :
 // C'tor
 TreeToR::TreeToR(SEXP desiredVariables, const char *selection, 
 		 unsigned int initialSize, float growthFactor, 
+		 SEXP activate,
                  bool verbose, bool trace):
   m_desiredVariables(desiredVariables),
   m_selection(selection),
   m_df(initialSize, growthFactor, verbose),
+  m_activate(activate),
   m_verbose(verbose),
   m_trace(trace),
+  m_doActivate(false),
   m_tree(0),
   m_formulaList(),
   m_variable(0),
@@ -93,6 +96,36 @@ void TreeToR::Begin(TTree* tree)
   
   // Reset the global entry #
   m_globalEntry = 0;
+
+  // Activate what we want
+  if ( length(m_activate) > 0 ) {
+    if ( length(m_activate) == 1  && strcmp(CHAR(STRING_ELT(m_activate, 0)), "-*") == 0 ) {
+      m_doActivate = false;
+    }
+    else {
+      m_doActivate = true;
+    }
+  }
+
+  if ( length(m_activate) == 0 ) {
+    // Turn all branches on
+    m_tree->SetBranchStatus("*", 1);
+    if ( m_verbose )
+      REprintf("TreeToR - All branches activated\n");
+  }
+
+  if ( m_doActivate ) {
+    // Activate branches - first turn everythig off
+    m_tree->SetBranchStatus("*", 0);
+    
+    // Now turn on the specified branches
+    for (unsigned int i = 0; i < length(m_activate); i++ ) {
+      m_tree->SetBranchStatus( CHAR(STRING_ELT(m_activate, i)), 1);
+
+      if ( m_verbose )
+        REprintf("TreeToR - Activating branch %s\n", CHAR(STRING_ELT(m_activate, i)) );
+    }
+  }
   
   // Compile selection expression if there is one
   if (strlen(m_selection.c_str())) {
@@ -321,6 +354,17 @@ void TreeToR::ProcessFill(Long64_t localEntry)
   
   
 } // ProcessFill(...)
+
+//////////////////////////////
+void TreeToR::Terminate() {
+  if ( m_doActivate ) {
+    // Activate branches - first turn everythig off
+    m_tree->SetBranchStatus("*", 1);
+
+    if ( m_verbose ) REprintf("TreeToR:Terminate - Reactivating all branches\n");
+  }
+}
+    
 
 /////////////////////////////
 TreeToR::~TreeToR() {
