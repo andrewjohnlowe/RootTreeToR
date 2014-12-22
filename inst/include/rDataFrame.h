@@ -211,6 +211,7 @@ class RDataFrame
   SEXP dataFrameInAnsForm(); // Get back the data frame
         
   bool beVerbose() const { return m_verbose; }
+  unsigned int currentSize() const { return m_currentSize; }
         
   virtual ~RDataFrame();
         

@@ -56,12 +56,15 @@ template<> struct set<RDataFrameStringColumn, std::string> :
 /////////////////
 // C'tor
 TreeToR::TreeToR(SEXP desiredVariables, const char *selection, 
-                 unsigned int initialSize, float growthFactor, 
+                 unsigned int initialSize,
+                 unsigned int maxSize,
+                 float growthFactor, 
                  SEXP activate,
                  bool verbose, bool trace):
   m_desiredVariables(desiredVariables),
   m_selection(selection),
   m_df(initialSize, growthFactor, verbose),
+  m_maxSize(maxSize),
   m_activate(activate),
   m_verbose(verbose),
   m_trace(trace),
@@ -285,6 +288,11 @@ Bool_t TreeToR::Process(Long64_t localEntry)
   
   // Loop over array indices
   for( unsigned int arrayIndex=0; arrayIndex < arraySize; arrayIndex++ ) {
+    
+    // Stop if number of output entries has reached m_maxSize
+    if (m_maxSize > 0 && m_df.currentSize() >= m_maxSize) {
+      return kFALSE;
+    }
     
     // Check the selection
     if (m_select) {

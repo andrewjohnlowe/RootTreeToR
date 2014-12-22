@@ -191,7 +191,7 @@ processToRResult = function(ans, isVerbose) {
 #################################
 ## toR
 toR = function(rootChain, columns, selection="", nEntries=100, firstEntry=0,
-  initialSize=1000, growthFactor=1.7, prefix="", activate=character(0)) { 
+  initialSize=1000, maxSize=0, growthFactor=1.7, prefix="", activate=character(0)) { 
   
   .assertClass(rootChain, "RootChain")
   
@@ -201,8 +201,10 @@ toR = function(rootChain, columns, selection="", nEntries=100, firstEntry=0,
   if ( any(nchar(columns) == 0) ) stop("You must supply a nonblank list of tree variables")
   
   if ( initialSize <= 0 ) stop ("initialSize must be > 0")
-                
-        if ( nEntries <= 0 ) nEntries = 90999999
+
+  maxSize <- max(maxSize, 0)
+  
+  if ( nEntries <= 0 ) nEntries = 90999999
   
   ## Growth factor had better be greater than 1.5 
   if ( growthFactor < 1.5) stop ("growthFactor must be >= 1.5")
@@ -242,6 +244,7 @@ toR = function(rootChain, columns, selection="", nEntries=100, firstEntry=0,
     as.integer(nEntries), 
     as.integer(firstEntry),
     as.integer(initialSize),
+    as.integer(maxSize),
     as.numeric(growthFactor),
     activate,
     PACKAGE="RootTreeToR")

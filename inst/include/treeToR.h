@@ -19,7 +19,9 @@ class TreeToR : public TSelector {
                 
  public:
   TreeToR(SEXP desiredVariables, const char *selection, 
-          unsigned int initialSize, float growthFactor, 
+          unsigned int initialSize,
+          unsigned int maxSize,
+          float growthFactor,
           SEXP activate,
           bool verbose, bool trace);
     
@@ -51,7 +53,8 @@ class TreeToR : public TSelector {
   bool m_trace;
   
   bool m_doActivate;
-                
+  
+  unsigned int m_maxSize;
   unsigned int m_nColumns;
                 
   TList m_formulaList;

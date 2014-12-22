@@ -115,12 +115,15 @@ SEXP RootChainManager::names() const {
 // toR -- convert from root to R via a TSelector
 SEXP RootChainManager::toR(SEXP columns, SEXP selection, 
                            SEXP nEntries, SEXP firstEntry,
-                           SEXP initialSize, SEXP growthFactor,
+                           SEXP initialSize, 
+                           SEXP maxSize,
+                           SEXP growthFactor,
                            SEXP activate)
 {
   // Run over tree with TreeToR
   TreeToR treeToR(columns, CHAR(STRING_ELT(selection, 0)), 
-                  INTEGER(initialSize)[0], 
+                  INTEGER(initialSize)[0],
+                  INTEGER(maxSize)[0],
                   REAL(growthFactor)[0],
                   activate,
                   m_verbose, m_trace);
