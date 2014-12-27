@@ -191,7 +191,8 @@ processToRResult = function(ans, isVerbose) {
 #################################
 ## toR
 toR = function(rootChain, columns, selection="", nEntries=100, firstEntry=0,
-  initialSize=1000, maxSize=0, growthFactor=1.7, prefix="", activate=character(0)) { 
+  initialSize=1000, maxSize=0, growthFactor=1.7, prefix="", activate=character(0),
+  doEntryColumns=F) { 
   
   .assertClass(rootChain, "RootChain")
   
@@ -215,6 +216,8 @@ toR = function(rootChain, columns, selection="", nEntries=100, firstEntry=0,
   if ( length(selection) > 1 ) stop("selection must have only one element")
 
   if ( ! is.character(activate) ) stop("activate must be a character vector")
+  
+  if ( ! is.logical(doEntryColumns) ) stop("doEntryColumns must be a logical vector")
   
   ## Handle the columns
   ## If there is a ':' in the columns, then they must be split up
@@ -247,6 +250,7 @@ toR = function(rootChain, columns, selection="", nEntries=100, firstEntry=0,
     as.integer(maxSize),
     as.numeric(growthFactor),
     activate,
+    doEntryColumns,
     PACKAGE="RootTreeToR")
   
   isVerbose = getVerbose(rootChain)

@@ -17,7 +17,8 @@ extern "C"
   SEXP names(SEXP manager);
         
   SEXP toR(SEXP manager, SEXP columns, SEXP selection, SEXP nEntries, SEXP firstEntry,
-           SEXP initialSize, SEXP maxSize, SEXP growthFactor, SEXP activate);
+           SEXP initialSize, SEXP maxSize, SEXP growthFactor, SEXP activate,
+           SEXP doEntryColumns);
         
   SEXP makeEventList(SEXP manager, SEXP name, SEXP selection, SEXP nEntries, SEXP firstEntry);
   SEXP applyEventList(SEXP manager, SEXP eventList);

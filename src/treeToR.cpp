@@ -60,12 +60,14 @@ TreeToR::TreeToR(SEXP desiredVariables, const char *selection,
                  unsigned int maxSize,
                  float growthFactor, 
                  SEXP activate,
+                 bool doEntryColumns,
                  bool verbose, bool trace):
   m_desiredVariables(desiredVariables),
   m_selection(selection),
   m_df(initialSize, growthFactor, verbose),
   m_maxSize(maxSize),
   m_activate(activate),
+  m_doEntryColumns(doEntryColumns),
   m_verbose(verbose),
   m_trace(trace),
   m_doActivate(false),
@@ -207,12 +209,14 @@ void TreeToR::Begin(TTree* tree)
       m_realColumns.push_back( m_df.addRealColumn(colName) );
   } // For over desired columns
   
-    //  Make an extra column for the entry number
-  m_globalEntryColumn = m_df.addIntegerColumn("globalEntry");
-  m_localEntryColumn  = m_df.addIntegerColumn("localEntry");
-  
-  // Make an extra column for the tree number
-  m_treeColumn = m_df.addIntegerColumn("treeNum");
+  if (m_doEntryColumns) {
+    // Make an extra column for the entry number
+    m_globalEntryColumn = m_df.addIntegerColumn("globalEntry");
+    m_localEntryColumn  = m_df.addIntegerColumn("localEntry");
+    
+    // Make an extra column for the tree number
+    m_treeColumn = m_df.addIntegerColumn("treeNum");
+  }
   
   // If necessary, add an index column for arrays
   m_idxColumn = 0;       
@@ -341,10 +345,12 @@ Bool_t TreeToR::Process(Long64_t localEntry)
                                                            m_variable, arrayIndex)
                   );
     
-    // Write the entry and tree number number
-    m_globalEntryColumn->set( m_globalEntry );
-    m_localEntryColumn->set( localEntry );
-    m_treeColumn->set( m_treeNumber );
+    if (m_doEntryColumns) {
+      // Write the entry and tree number number
+      m_globalEntryColumn->set( m_globalEntry );
+      m_localEntryColumn->set( localEntry );
+      m_treeColumn->set( m_treeNumber );
+    }
     
     if ( m_trace) REprintf("TreeToR:Trace - Process Fill - F %d\n", arrayIndex);
     

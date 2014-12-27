@@ -37,7 +37,8 @@ class RootChainManager {
         
   // Convert the chain to R
   SEXP toR(SEXP columns, SEXP selection, SEXP nEntries, SEXP firstEntry,
-           SEXP initialSize, SEXP maxSize, SEXP growthFactor, SEXP activate);
+           SEXP initialSize, SEXP maxSize, SEXP growthFactor, SEXP activate,
+           SEXP doEntryColumns);
         
   // Make an EventList
   SEXP makeEventList(SEXP name, SEXP selection, SEXP nEntries, SEXP firstEntry);
