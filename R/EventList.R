@@ -4,7 +4,7 @@
 ##  S4 Class for an EventList#
 
 ## nEntries becomes a generic function
-nEntries <- function(object) stop("Called without a registered object")
+nEntries <- function(object, selection="") stop("Called without a registered object")
 setGeneric("nEntries")
 
 setClass("EventList",
@@ -68,8 +68,8 @@ getDetails <- function(eventList) {
 ################
 ## nEntries - Get the number of entries in the event list
 setMethod("nEntries", "EventList",
-          function(object) {
-            
+          function(object, selection="") {
+            if (selection != "") stop("Selection in nEntries not implemented for event lists.", call.=F)
             .Call("nEntriesEventList", object@ptr, 
                   PACKAGE="RootTreeToR")
           } 

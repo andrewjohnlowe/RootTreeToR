@@ -12,7 +12,7 @@ extern "C"
         
   SEXP deleteRootChainManager(SEXP manager);
         
-  SEXP nEntries(SEXP manager);
+  SEXP nEntries(SEXP manager, SEXP selection);
         
   SEXP names(SEXP manager);
         

@@ -135,12 +135,18 @@ SEXP getEventListName(SEXP manager)
 
 /////////////////////////////////////////
 // nEntries -- Get the number of entries
-SEXP nEntries(SEXP manager)
+SEXP nEntries(SEXP manager, SEXP selection)
 {
   checkForRootChainManagerPtr(manager);
   RootChainManager* rcm = (RootChainManager*) R_ExternalPtrAddr(manager);
 
-  unsigned int e = rcm->nEntries();
+  const char* sel = CHAR(STRING_ELT(selection, 0));
+  
+  unsigned int e;
+  if (strlen(sel) == 0)
+    e = rcm->nEntries();
+  else
+    e = rcm->nEntriesSel(sel);
         
   SEXP ret = NEW_INTEGER(1);
   INTEGER(ret)[0] = e;

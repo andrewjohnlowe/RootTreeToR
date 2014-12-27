@@ -67,6 +67,12 @@ unsigned int RootChainManager::nEntries() const {
 }
 
 ////////////////////////////////////////////////////////////
+// nEntriesSel -- Get the number of entries passing a selection
+unsigned int RootChainManager::nEntriesSel(const char* sel) const {
+  return static_cast<unsigned int>( m_chain->GetEntries(sel) );
+}
+
+////////////////////////////////////////////////////////////
 // names -- get the names of the branches and their details
 SEXP RootChainManager::names() const {
         

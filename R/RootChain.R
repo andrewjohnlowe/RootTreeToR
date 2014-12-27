@@ -81,10 +81,10 @@ getTrace <- function(rootChain) {
 
 #################################
 ## nEntries
-setMethod("nEntries", "RootChain", 
-          function(object) {  
+setMethod("nEntries", "RootChain",
+          function(object, selection="") {  
             
-            .Call("nEntries", object@manager, PACKAGE="RootTreeToR")
+            .Call("nEntries", object@manager, selection, PACKAGE="RootTreeToR")
           }
           )
 

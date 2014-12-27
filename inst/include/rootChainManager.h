@@ -28,7 +28,10 @@ class RootChainManager {
         
   // Return the number of entries
   unsigned int nEntries() const;
-        
+
+  // Return the number of entries passing a selection
+  unsigned int nEntriesSel(const char* sel) const;
+
   // Get the names in the branch
   SEXP names() const;
         
