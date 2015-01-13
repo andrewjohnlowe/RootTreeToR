@@ -48,7 +48,11 @@ RootChainManager::RootChainManager(SEXP treeName, SEXP fileList, bool verbose, b
   for ( unsigned int i = 0; i < GET_LENGTH(fileList); ++i ) {    
     std::string fileNameC = CHAR(STRING_ELT(fileList, i) );
     if (m_verbose) REprintf("Adding file %s to chain\n", fileNameC.c_str());
-    m_chain->Add( fileNameC.c_str(), 0 );
+    Int_t res = m_chain->Add( fileNameC.c_str(), 0 );
+    if (res == 0) {
+      delete m_chain;
+      error("File/tree not found");
+    }
   }
 }
 
