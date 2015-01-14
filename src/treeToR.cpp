@@ -148,17 +148,24 @@ void TreeToR::Begin(TTree* tree)
   }
   
   // Make the formulas
-  m_nColumns = length(m_desiredVariables);
-  m_variable = new TTreeFormula* [m_nColumns];
+  unsigned int n_desiredVariables = length(m_desiredVariables);
+  m_nColumns = 0;
+  m_variable = new TTreeFormula* [n_desiredVariables];
   
   // -- Create TreeForumlas for each column
-  for (unsigned int i = 0; i<m_nColumns; i++) {
-    m_variable[i] = new TTreeFormula("Var1",
+  for (unsigned int i = 0; i<n_desiredVariables; i++) {
+    TTreeFormula *form = new TTreeFormula("Var1",
                                      CHAR(STRING_ELT(m_desiredVariables,i)), 
                                      m_tree);
+    // Unconditionally remove arrays
+    if ( form->GetManager()->GetMultiplicity() != 0 ) {
+      delete form;
+      form = new TTreeFormula("Var1", "0", m_tree);
+    }
+    m_variable[m_nColumns++] = form;
     
     // Add to our formula list
-    m_formulaList.Add(m_variable[i]);
+    m_formulaList.Add(form);
   }
   
   // If there's selection criteria, then we need a formula manager to keep 
@@ -179,7 +186,7 @@ void TreeToR::Begin(TTree* tree)
     
   } // if ( there is a selection )
   
-    // Figure out if there is an array involved
+  // Figure out if there is an array involved
   m_isArray = false;
   for (unsigned int i=0; i<=m_formulaList.LastIndex(); i++) {
     TTreeFormula *form = ((TTreeFormula*)m_formulaList.At(i));
