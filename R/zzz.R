@@ -20,6 +20,7 @@
   
   ## Call the initialize routine for EventListWrapper
   .Call(initEventListWrapper)
+  .Call(initEntryListWrapper)
 
   ## Call the initialize routine for FileForHistsWrapper
   .Call(initFileForHistsWrapper)

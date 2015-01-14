@@ -1,13 +1,14 @@
 export(rootCommand, openRootChain, setVerbose, getVerbose, getNames,
        setTrace, getTrace,
-       makeEventList, narrowWithEventList, getEventListName,
-       clearEventList, toR, toRUser, getEventList, createEventList,
+       makeEventList, narrowWithEventList, narrowWithEntryList, getEventListName,
+       clearEventList, clearEntryList, toR, toRUser, getEventList, createEventList,
        getName, getDetails, getEntries, clear, isInEventList,
+       getNameEntryList, getDetailsEntryList,
        putIntoEventList, addEventLists, subtractEventLists, writeDFToRoot,
        openFileWithHists, listDirs, listHists, getHists, niceNames, loadRootLibrary) 
 
 importFrom(methods)
-exportClasses(RootChain, EventList, FileForHists)
+exportClasses(RootChain, EventList, EntryList, FileForHists)
 exportMethods(initialize, show, nEntries) 
 
 ### Do not export
@@ -15,6 +16,7 @@ exportMethods(initialize, show, nEntries)
       
 ### Declare RootTreeToR shared library
 useDynLib(RootTreeToR, initRoot, initRootChainManagerWrapper,
-          initEventListWrapper, newRootChainManager,
+          initEventListWrapper, initEntryListWrapper,
+          newRootChainManager,
           initFileForHistsWrapper, openFileForHists,
           namesMatchingClass, getHistsR)

@@ -20,10 +20,12 @@ extern "C"
            SEXP initialSize, SEXP maxSize, SEXP growthFactor, SEXP activate,
            SEXP doEntryColumns);
         
-  SEXP makeEventList(SEXP manager, SEXP name, SEXP selection, SEXP nEntries, SEXP firstEntry);
+  SEXP makeEventList(SEXP manager, SEXP name, SEXP selection, SEXP nEntries, SEXP firstEntry, SEXP entryList);
   SEXP applyEventList(SEXP manager, SEXP eventList);
+  SEXP applyEntryList(SEXP manager, SEXP entryList);
   SEXP getEventListName(SEXP manager);
   SEXP clearEventList(SEXP manager);
+  SEXP clearEntryList(SEXP manager);
         
   SEXP setVerbose(SEXP manager, SEXP verbose);
   SEXP getVerbose(SEXP manager);

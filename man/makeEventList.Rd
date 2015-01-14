@@ -6,7 +6,7 @@
   Chain. 
 }
 \usage{
-makeEventList(rootChain, name, selection, append = F, nEntries = 100, firstEntry = 0)
+makeEventList(rootChain, name, selection, append = F, nEntries = 100, firstEntry = 0, entryList = F)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -21,6 +21,8 @@ makeEventList(rootChain, name, selection, append = F, nEntries = 100, firstEntry
     selection. WARNING: Default is low! }
   \item{firstEntry}{ The first entry in the chain to consider for the
     selection. Default is zero (the first entry).  }
+  \item{entryList}{ Whether to create an entry list instead of an
+    event list, default is FALSE. }
 }
 \details{
   An Event List restricts a Root Chain to a particular set of events; so

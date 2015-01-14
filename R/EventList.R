@@ -3,10 +3,6 @@
 ##
 ##  S4 Class for an EventList#
 
-## nEntries becomes a generic function
-nEntries <- function(object, selection="") stop("Called without a registered object")
-setGeneric("nEntries")
-
 setClass("EventList",
          representation(ptr="externalptr")
          )

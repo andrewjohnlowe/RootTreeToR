@@ -113,7 +113,7 @@ getNames <- function(rootChain, raw=F) {
 ################################
 ## makeEventList
 makeEventList <- function(rootChain, name, selection, append=F, 
-  nEntries=100, firstEntry=0) {
+  nEntries=100, firstEntry=0, entryList=F) {
   
   .assertClass(rootChain, "RootChain")
   
@@ -123,10 +123,13 @@ makeEventList <- function(rootChain, name, selection, append=F,
   
   .Call("makeEventList", rootChain@manager,
         col, selection, as.integer(nEntries),
-        as.integer(firstEntry), PACKAGE="RootTreeToR")
+        as.integer(firstEntry), as.logical(entryList), PACKAGE="RootTreeToR")
   
-  ## Find this event list
-  getEventList(name, T)
+  ## Find this event/entry list
+  if (entryList)
+    getEntryList(name, T)
+  else
+    getEventList(name, T)
 }
 
 ################################
@@ -136,6 +139,17 @@ narrowWithEventList <- function(rootChain, eventList) {
   .assertClass(eventList, "EventList")
   
   .Call("applyEventList", rootChain@manager, eventList@ptr, PACKAGE="RootTreeToR")
+  
+  invisible()
+}
+
+################################
+## narrowWithEntryList
+narrowWithEntryList <- function(rootChain, entryList) {
+  .assertClass(rootChain, "RootChain")
+  .assertClass(entryList, "EntryList")
+  
+  .Call("applyEntryList", rootChain@manager, entryList@ptr, PACKAGE="RootTreeToR")
   
   invisible()
 }
@@ -153,6 +167,15 @@ getEventListName = function(rootChain) {
 clearEventList = function(rootChain) {
   .assertClass(rootChain, "RootChain")
   .Call("clearEventList", rootChain@manager, PACKAGE="RootTreeToR")
+  
+  invisible()
+}       
+
+#############################
+## clearEntryList
+clearEntryList = function(rootChain) {
+  .assertClass(rootChain, "RootChain")
+  .Call("clearEntryList", rootChain@manager, PACKAGE="RootTreeToR")
   
   invisible()
 }       

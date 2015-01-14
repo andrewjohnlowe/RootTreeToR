@@ -11,10 +11,11 @@
 #define ROOT_CHAIN_MANAGER_H
 
 class TChain;
+class TEventList;
+class TEntryList;
 
 #include <R.h>
 #include <Rdefines.h>
-
 
 class RootChainManager {
         
@@ -41,13 +42,19 @@ class RootChainManager {
            SEXP doEntryColumns);
         
   // Make an EventList
-  SEXP makeEventList(SEXP name, SEXP selection, SEXP nEntries, SEXP firstEntry);
+  SEXP makeEventList(SEXP name, SEXP selection, SEXP nEntries, SEXP firstEntry, SEXP entryList);
         
   // Apply an EventList
   SEXP applyEventList(TEventList* el);
-        
+
+  // Apply an EntryList
+  SEXP applyEntryList(TEntryList* el);
+
   // Clear an EventList
   SEXP clearEventList();
+  
+  // Clear an EntryList
+  SEXP clearEntryList();
         
   // Get the tree
   TChain* tree() { return m_chain; }

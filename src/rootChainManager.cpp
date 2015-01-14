@@ -14,6 +14,7 @@
 #include <TChain.h>
 #include <TBranch.h>
 #include <TEventList.h>
+#include <TEntryList.h>
 
 #include <string>
 
@@ -148,7 +149,7 @@ SEXP RootChainManager::toR(SEXP columns, SEXP selection,
 
 //////////////////////////////
 // Make an event list
-SEXP RootChainManager::makeEventList(SEXP name, SEXP selection, SEXP nEntries, SEXP firstEntry)
+SEXP RootChainManager::makeEventList(SEXP name, SEXP selection, SEXP nEntries, SEXP firstEntry, SEXP entryList)
 {
   if (m_verbose) REprintf("Running TDraw with |%s| |%s| %d %d\n", 
                           CHAR(STRING_ELT(name, 0)),
@@ -157,7 +158,7 @@ SEXP RootChainManager::makeEventList(SEXP name, SEXP selection, SEXP nEntries, S
                           
 
   m_chain->Draw( CHAR(STRING_ELT(name, 0)), 
-                 CHAR(STRING_ELT(selection, 0)), "",
+                 CHAR(STRING_ELT(selection, 0)), (LOGICAL(entryList)[0])?"entrylist":"",
                  INTEGER(nEntries)[0], INTEGER(firstEntry)[0] );
         
   return R_NilValue;
@@ -170,6 +171,17 @@ SEXP RootChainManager::applyEventList(TEventList* el)
   m_chain->SetEventList(el);
         
   if (m_verbose) REprintf("Narrow chain to event list %s\n", el->GetName() );
+        
+  return R_NilValue;
+}
+
+/////////////////////////////
+// Apply event list
+SEXP RootChainManager::applyEntryList(TEntryList* el)
+{
+  m_chain->SetEntryList(el);
+        
+  if (m_verbose) REprintf("Narrow chain to entry list %s\n", el->GetName() );
         
   return R_NilValue;
 }
@@ -195,6 +207,17 @@ SEXP RootChainManager::clearEventList()
   m_chain->SetEventList(0);
         
   if (m_verbose) REprintf("Removing event list restriction on chain\n");
+        
+  return R_NilValue;
+}
+
+//////////////////////
+// Clear an event list
+SEXP RootChainManager::clearEntryList()
+{
+  m_chain->SetEntryList(0);
+        
+  if (m_verbose) REprintf("Removing entry list restriction on chain\n");
         
   return R_NilValue;
 }

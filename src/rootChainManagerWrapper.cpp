@@ -5,6 +5,7 @@
 
 #include "rootChainManagerWrapper.h"
 #include "eventListWrapper.h"
+#include "entryListWrapper.h"
 
 // Some definition of True is interfering
 #undef TRUE
@@ -179,12 +180,12 @@ SEXP toR(SEXP manager, SEXP columns, SEXP selection, SEXP nEntries,
 
 ///////////////////////////////////////////
 // makeEventList -- Create an event list
-SEXP makeEventList(SEXP manager, SEXP name, SEXP selection, SEXP nEntries, SEXP firstEntry)
+SEXP makeEventList(SEXP manager, SEXP name, SEXP selection, SEXP nEntries, SEXP firstEntry, SEXP entryList)
 {
   checkForRootChainManagerPtr(manager);
   RootChainManager* rcm = (RootChainManager*) R_ExternalPtrAddr(manager);
 
-  return rcm->makeEventList(name, selection, nEntries, firstEntry);
+  return rcm->makeEventList(name, selection, nEntries, firstEntry, entryList);
 }
 
 //////////////////////////////
@@ -199,6 +200,18 @@ SEXP applyEventList(SEXP manager, SEXP eventList)
   return rcm->applyEventList(el);
 }
 
+//////////////////////////////
+// applyEntryList -- Apply an entry list to this chain
+SEXP applyEntryList(SEXP manager, SEXP entryList)
+{
+  checkForRootChainManagerPtr(manager);
+  RootChainManager* rcm = (RootChainManager*) R_ExternalPtrAddr(manager);
+        
+  TEntryList* el = checkForEntryListWrapper(entryList);
+        
+  return rcm->applyEntryList(el);
+}
+
 //////////////////////
 // Clear the applied event list
 SEXP clearEventList(SEXP manager)
@@ -209,3 +222,12 @@ SEXP clearEventList(SEXP manager)
   return rcm->clearEventList();
 }
         
+//////////////////////
+// Clear the applied entry list
+SEXP clearEntryList(SEXP manager)
+{
+  checkForRootChainManagerPtr(manager);
+  RootChainManager* rcm = (RootChainManager*) R_ExternalPtrAddr(manager);
+
+  return rcm->clearEntryList();
+}
