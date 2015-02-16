@@ -12,8 +12,8 @@
 template<class T, class U> struct set : public std::unary_function<T, void>
 {
   set(TTreeFormula** variable, unsigned arrayIdx) : 
-    m_variable(variable),
-    m_arrayIdx(arrayIdx)
+    m_arrayIdx(arrayIdx),
+    m_variable(variable)
   {}
   
   void operator()(T* column) { 
@@ -35,8 +35,8 @@ template<> struct set<RDataFrameStringColumn, std::string> :
   public std::unary_function<RDataFrameStringColumn*, void>
 {
   set(TTreeFormula** variable, unsigned arrayIdx) : 
-    m_variable(variable),
-    m_arrayIdx(arrayIdx)
+    m_arrayIdx(arrayIdx),
+    m_variable(variable)
   {}
   
   void operator()(RDataFrameStringColumn* column) { 
@@ -64,28 +64,28 @@ TreeToR::TreeToR(SEXP desiredVariables, const char *selection,
                  bool verbose, bool trace):
   m_desiredVariables(desiredVariables),
   m_selection(selection),
-  m_df(initialSize, growthFactor, verbose),
-  m_maxSize(maxSize),
   m_activate(activate),
-  m_doEntryColumns(doEntryColumns),
-  m_verbose(verbose),
-  m_trace(trace),
-  m_doActivate(false),
+  m_df(initialSize, growthFactor, verbose),
   m_tree(0),
-  m_formulaList(),
-  m_variable(0),
-  m_select(0),
-  m_manager(0),
-  m_isArray(false),
   m_integerColumns(),
   m_realColumns(),
   m_stringColumns(),
+  m_verbose(verbose),
+  m_trace(trace),
+  m_doActivate(false),
+  m_doEntryColumns(doEntryColumns),  
+  m_maxSize(maxSize),
+  m_nColumns(0),
+  m_formulaList(),
+  m_manager(0),
+  m_variable(0),
+  m_select(0),
+  m_isArray(false),
   m_globalEntryColumn(),
   m_localEntryColumn(),
   m_treeColumn(),
   m_idxColumn(),
   m_treeNumber(0),
-  m_nColumns(0),
   m_globalEntry(0),
   m_pastBegin(false)
 {}

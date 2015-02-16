@@ -56,9 +56,9 @@ class RDataFrameColumn
 
  RDataFrameColumn(const std::string name, unsigned int order, 
                   bool verbose) :
-  m_name(name),
-    m_order(order),
     m_isSet(false),
+    m_name(name),
+    m_order(order),
     m_verbose(verbose)
     {};
         

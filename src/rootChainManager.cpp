@@ -24,9 +24,9 @@
 ////////////////////////////////////////////////////////////
 // C'tor
 RootChainManager::RootChainManager(SEXP treeName, SEXP fileList, bool verbose, bool trace) :
-  m_chain(0),
   m_verbose(verbose),
-  m_trace(trace)
+  m_trace(trace),
+  m_chain(0)
 {
   // Check arguments
   if ( ! IS_CHARACTER(treeName) ) error("treeName must be a string");

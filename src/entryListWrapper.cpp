@@ -84,8 +84,6 @@ SEXP newEntryList(SEXP name, SEXP title, SEXP entryNums)
   std::string daName = CHAR( STRING_ELT(name, 0) );
   std::string daTitle = CHAR( STRING_ELT(title, 0) );
   
-  int n = GET_LENGTH(entryNums);
-  
   TEntryList* el = new TEntryList(daName.c_str(), daTitle.c_str());
   
   // Wrap it -- and I made it, so I manage it
