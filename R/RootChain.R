@@ -215,7 +215,7 @@ processToRResult = function(ans, isVerbose) {
 ## toR
 toR = function(rootChain, columns, selection="", nEntries=100, firstEntry=0,
   initialSize=1000, maxSize=0, growthFactor=1.7, prefix="", activate=character(0),
-  doEntryColumns=F) { 
+  doEntryColumns=F, doArrays=F) { 
   
   .assertClass(rootChain, "RootChain")
   
@@ -274,6 +274,7 @@ toR = function(rootChain, columns, selection="", nEntries=100, firstEntry=0,
     as.numeric(growthFactor),
     activate,
     doEntryColumns,
+    doArrays,
     PACKAGE="RootTreeToR")
   
   isVerbose = getVerbose(rootChain)

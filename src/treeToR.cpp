@@ -61,6 +61,7 @@ TreeToR::TreeToR(SEXP desiredVariables, const char *selection,
                  float growthFactor, 
                  SEXP activate,
                  bool doEntryColumns,
+                 bool doArrays,
                  bool verbose, bool trace):
   m_desiredVariables(desiredVariables),
   m_selection(selection),
@@ -73,7 +74,8 @@ TreeToR::TreeToR(SEXP desiredVariables, const char *selection,
   m_verbose(verbose),
   m_trace(trace),
   m_doActivate(false),
-  m_doEntryColumns(doEntryColumns),  
+  m_doEntryColumns(doEntryColumns),
+  m_doArrays(doArrays),
   m_maxSize(maxSize),
   m_nColumns(0),
   m_formulaList(),
@@ -157,8 +159,8 @@ void TreeToR::Begin(TTree* tree)
     TTreeFormula *form = new TTreeFormula("Var1",
                                      CHAR(STRING_ELT(m_desiredVariables,i)), 
                                      m_tree);
-    // Unconditionally remove arrays
-    if ( form->GetManager()->GetMultiplicity() != 0 ) {
+    // Remove arrays if not explicitly requested
+    if (form->GetManager()->GetMultiplicity() != 0 && !m_doArrays) {
       delete form;
       form = new TTreeFormula("Var1", "0", m_tree);
     }

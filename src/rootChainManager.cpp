@@ -130,7 +130,8 @@ SEXP RootChainManager::toR(SEXP columns, SEXP selection,
                            SEXP maxSize,
                            SEXP growthFactor,
                            SEXP activate,
-                           SEXP doEntryColumns)
+                           SEXP doEntryColumns,
+                           SEXP doArrays)
 {
   // Run over tree with TreeToR
   TreeToR treeToR(columns, CHAR(STRING_ELT(selection, 0)), 
@@ -139,6 +140,7 @@ SEXP RootChainManager::toR(SEXP columns, SEXP selection,
                   REAL(growthFactor)[0],
                   activate,
                   LOGICAL(doEntryColumns)[0],
+                  LOGICAL(doArrays)[0],
                   m_verbose, m_trace);
         
   m_chain->Process( &treeToR, "", INTEGER(nEntries)[0], 

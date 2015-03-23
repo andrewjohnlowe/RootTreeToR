@@ -24,6 +24,7 @@ class TreeToR : public TSelector {
           float growthFactor,
           SEXP activate,
           bool doEntryColumns,
+          bool doArrays,
           bool verbose, bool trace);
     
   virtual Int_t Version() const { return 2; }  // needed to force usage of Process()
@@ -55,6 +56,7 @@ class TreeToR : public TSelector {
   
   bool m_doActivate;
   bool m_doEntryColumns;
+  bool m_doArrays;
   
   unsigned int m_maxSize;
   unsigned int m_nColumns;
