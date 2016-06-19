@@ -12,11 +12,8 @@
 
 // Represent an R Data Frame for "idiot" proof declaring and filling
 
-extern "C"
-{
 #include <R.h>
 #include <Rdefines.h>
-}
 
 #include <string>
 #include <vector>
